@@ -1,8 +1,8 @@
 package com.pvthach.capstone.security.servies;
 
 import com.pvthach.capstone.message.response.EnumResponse;
-import com.pvthach.capstone.model.User;
-import com.pvthach.capstone.repository.UserRepository;
+import com.pvthach.capstone.admin.model.User;
+import com.pvthach.capstone.admin.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

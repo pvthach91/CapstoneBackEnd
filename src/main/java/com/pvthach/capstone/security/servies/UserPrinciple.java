@@ -1,7 +1,7 @@
 package com.pvthach.capstone.security.servies;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pvthach.capstone.model.User;
+import com.pvthach.capstone.admin.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

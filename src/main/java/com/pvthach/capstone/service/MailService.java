@@ -1,7 +1,6 @@
 package com.pvthach.capstone.service;
 
-import com.pvthach.capstone.restaurant.model.Ordering;
-import com.pvthach.capstone.restaurant.model.Reservation;
+import com.pvthach.capstone.farming.model.Ordering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -40,26 +39,6 @@ public class MailService {
         });
     }
 
-    public void sendReservationProcessing(Reservation reservation){
-        String name = reservation.getReserveBy();
-        String content = "Hi " + name + ", Your table booking " + "'" + reservation.getReservationId() + "'" + " is been processing. We will inform you when it's reserved";
-        MailDTO dto = new MailDTO("", reservation.getEmail(), "Table Booking Is Been Processing", content);
-        sendEmail(dto);
-    }
-
-    public void sendReserved(Reservation reservation){
-        String name = reservation.getReserveBy();
-        String content = "Hi " + name + ", Your table booking " + "'" + reservation.getReservationId() + "'" + " is reserved";
-        MailDTO dto = new MailDTO("", reservation.getEmail(), "Table Booking Reserved", content);
-        sendEmail(dto);
-    }
-
-    public void sendReservationCancelled(Reservation reservation){
-        String name = reservation.getReserveBy();
-        String content = "Hi " + name + ", Your table booking " + "'" + reservation.getReservationId() + "'" + " has been cancelled";
-        MailDTO dto = new MailDTO("", reservation.getEmail(), "Table Booking Cancelled", content);
-        sendEmail(dto);
-    }
 
     public void sendOrderProcessing(Ordering order){
         String name = order.getOrderBy();
