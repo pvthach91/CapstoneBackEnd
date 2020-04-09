@@ -40,38 +40,38 @@ public class MailService {
     }
 
 
-    public void sendOrderProcessing(Ordering order){
-        String name = order.getOrderBy();
-        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + " is been processing. We will inform you when it's processed";
-        MailDTO dto = new MailDTO("", order.getEmail(), "Order Is Been Processing", content);
-        sendEmail(dto);
-    }
-
-    public void sendOrderProcessed(Ordering order){
-        String name = order.getOrderBy();
-        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + "has been processed. We will inform you when we deliver";
-        MailDTO dto = new MailDTO("", order.getEmail(), "Order Is Been Processed", content);
-        sendEmail(dto);
-    }
-
-    public void sendOrderDelivering(Ordering order){
-        String name = order.getOrderBy();
-        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + " is in delivering progress.";
-        MailDTO dto = new MailDTO("", order.getEmail(), "Order Is Been Delivering", content);
-        sendEmail(dto);
-    }
-
-    public void sendOrderFinished(Ordering order){
-        String name = order.getOrderBy();
-        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + " was already finished. Thank you so much for your ordering";
-        MailDTO dto = new MailDTO("", order.getEmail(), "Order Finished", content);
-        sendEmail(dto);
-    }
-
-    public void sendOrderCancelled(Ordering order){
-        String name = order.getOrderBy();
-        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + " has been cancelled";
-        MailDTO dto = new MailDTO("", order.getEmail(), "Order Cancelled", content);
-        sendEmail(dto);
-    }
+//    public void sendOrderProcessing(Ordering order){
+//        String name = order.getOrderBy();
+//        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + " is been processing. We will inform you when it's processed";
+//        MailDTO dto = new MailDTO("", order.getEmail(), "Order Is Been Processing", content);
+//        sendEmail(dto);
+//    }
+//
+//    public void sendOrderProcessed(Ordering order){
+//        String name = order.getOrderBy();
+//        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + "has been processed. We will inform you when we deliver";
+//        MailDTO dto = new MailDTO("", order.getEmail(), "Order Is Been Processed", content);
+//        sendEmail(dto);
+//    }
+//
+//    public void sendOrderDelivering(Ordering order){
+//        String name = order.getOrderBy();
+//        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + " is in delivering progress.";
+//        MailDTO dto = new MailDTO("", order.getEmail(), "Order Is Been Delivering", content);
+//        sendEmail(dto);
+//    }
+//
+//    public void sendOrderFinished(Ordering order){
+//        String name = order.getOrderBy();
+//        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + " was already finished. Thank you so much for your ordering";
+//        MailDTO dto = new MailDTO("", order.getEmail(), "Order Finished", content);
+//        sendEmail(dto);
+//    }
+//
+//    public void sendOrderCancelled(Ordering order){
+//        String name = order.getOrderBy();
+//        String content = "Hi " + name + ", Your order " + "'" + order.getOrderId() + "'" + " has been cancelled";
+//        MailDTO dto = new MailDTO("", order.getEmail(), "Order Cancelled", content);
+//        sendEmail(dto);
+//    }
 }

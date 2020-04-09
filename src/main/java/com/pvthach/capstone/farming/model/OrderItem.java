@@ -2,7 +2,6 @@ package com.pvthach.capstone.farming.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.pvthach.capstone.farming.dto.OrderItemDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,8 +21,8 @@ public class OrderItem implements Serializable {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "DISH_ID")
-    private Dish dish;
+    @JoinColumn(name = "PRODUCT_ID")
+    private Product product;
 
     @Column(name = "QUANTITY", nullable = false)
     private Integer quantity;
@@ -44,12 +43,12 @@ public class OrderItem implements Serializable {
         this.id = id;
     }
 
-    public Dish getDish() {
-        return dish;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setDish(Dish dish) {
-        this.dish = dish;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Integer getQuantity() {
@@ -68,21 +67,21 @@ public class OrderItem implements Serializable {
         this.ordering = ordering;
     }
 
-    public OrderItemDTO convertToDTO() {
-        OrderItemDTO dto = new OrderItemDTO();
-        dto.setId(id);
-        dto.setQuantity(quantity);
-        dto.setDish(dish.convertToDTO());
+//    public OrderItemDTO convertToDTO() {
+//        OrderItemDTO dto = new OrderItemDTO();
+//        dto.setId(id);
+//        dto.setQuantity(quantity);
+//        dto.setDish(dish.convertToDTO());
+//
+//        return dto;
+//    }
 
-        return dto;
-    }
-
-    public static List<OrderItemDTO> convertToDTOs(List<OrderItem> items) {
-        List<OrderItemDTO> dtos = new ArrayList<OrderItemDTO>();
-        for (OrderItem item : items) {
-            dtos.add(item.convertToDTO());
-        }
-
-        return dtos;
-    }
+//    public static List<OrderItemDTO> convertToDTOs(List<OrderItem> items) {
+//        List<OrderItemDTO> dtos = new ArrayList<OrderItemDTO>();
+//        for (OrderItem item : items) {
+//            dtos.add(item.convertToDTO());
+//        }
+//
+//        return dtos;
+//    }
 }

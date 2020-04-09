@@ -3,7 +3,7 @@ package com.pvthach.capstone.farming.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.pvthach.capstone.farming.dto.OrderDTO;
+import com.pvthach.capstone.admin.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -32,27 +32,24 @@ public class Ordering implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
 
-    @Column(name = "ORDER_BY", nullable = false)
-    private String orderBy;
-
-    @Column(name = "EMAIL", nullable = false)
-    private String email;
-
-    @Column(name = "PHONE", nullable = false)
-    @Size(min = 3, max = 50)
-    private String phone;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="ORDER_BY")
+    private User orderBy;
 
     @Column(name = "ADDRESS", nullable = false)
     private String address;
+
+    @Column(name = "LATITUDE", nullable = false)
+    private Double latitude;
+
+    @Column(name = "LONGITUDE", nullable = false)
+    private Double longitude;
 
     @Column(name = "TOTAL_PRICE", nullable = false)
     private Integer totalPrice;
 
     @Column(name = "STATUS", nullable = false)
     private String status;
-
-    @Column(name = "ORDER_TYPE")
-    private String orderType;
 
 
     @JsonIgnoreProperties("ordering")
@@ -88,29 +85,6 @@ public class Ordering implements Serializable {
         this.date = date;
     }
 
-    public String getOrderBy() {
-        return orderBy;
-    }
-
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public String getAddress() {
         return address;
@@ -144,32 +118,48 @@ public class Ordering implements Serializable {
         this.items = items;
     }
 
-    public String getOrderType() {
-        return orderType;
+    public User getOrderBy() {
+        return orderBy;
     }
 
-    public void setOrderType(String orderType) {
-        this.orderType = orderType;
+    public void setOrderBy(User orderBy) {
+        this.orderBy = orderBy;
     }
 
-    public OrderDTO convertToDTO () {
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        OrderDTO dto = new OrderDTO();
-        dto.setId(id);
-        dto.setOrderId(orderId);
-        dto.setDate(sdf.format(date));
-        dto.setOrderBy(orderBy);
-        dto.setEmail(email);
-        dto.setPhone(phone);
-        dto.setAddress(address);
-        dto.setTotalPrice(totalPrice);
-        dto.setStatus(status);
-        dto.setOrderType(orderType);
-        dto.setItems(OrderItem.convertToDTOs(items));
-
-        return dto;
+    public Double getLatitude() {
+        return latitude;
     }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+//    public OrderDTO convertToDTO () {
+//        String pattern = "yyyy-MM-dd HH:mm:ss";
+//        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+//        OrderDTO dto = new OrderDTO();
+//        dto.setId(id);
+//        dto.setOrderId(orderId);
+//        dto.setDate(sdf.format(date));
+////        dto.setOrderBy(orderBy);
+////        dto.setEmail(email);
+////        dto.setPhone(phone);
+//        dto.setAddress(address);
+//        dto.setTotalPrice(totalPrice);
+//        dto.setStatus(status);
+////        dto.setOrderType(orderType);
+//        dto.setItems(OrderItem.convertToDTOs(items));
+//
+//        return dto;
+//    }
 
     private String generateUniqueOrderId() {
         String pattern = "yyyyMMddHHmmss";
