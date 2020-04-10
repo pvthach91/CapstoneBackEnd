@@ -1,6 +1,5 @@
 package com.pvthach.capstone.service;
 
-import com.pvthach.capstone.farming.model.Ordering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
