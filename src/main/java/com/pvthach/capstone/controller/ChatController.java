@@ -4,7 +4,9 @@ import com.pvthach.capstone.dto.ChatDTO;
 import com.pvthach.capstone.dto.UserDTO;
 import com.pvthach.capstone.dto.request.ChatRequestDTO;
 import com.pvthach.capstone.model.Chat;
+import com.pvthach.capstone.model.ChatHistory;
 import com.pvthach.capstone.model.User;
+import com.pvthach.capstone.repository.ChatHistoryRepository;
 import com.pvthach.capstone.repository.ChatRepository;
 import com.pvthach.capstone.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +32,9 @@ public class ChatController {
 
 	@Autowired
 	ChatRepository chatRepository;
+
+	@Autowired
+	ChatHistoryRepository chatHistoryRepository;
 
 	@GetMapping("/api/chats/{id}")
 	@PreAuthorize("hasRole('FARMER') or hasRole('BUYER')")
@@ -51,9 +57,9 @@ public class ChatController {
 		User user = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException("User not found"));
 
-		List<Chat> chats = chatRepository.findAllByFromUserOrToUserOrderByDateCreatedDesc(user, user);
+		List<ChatHistory> chats = chatHistoryRepository.findAllByFromUserOrToUser(user, user);
 		List<User> contacts = new ArrayList<User>();
-		for (Chat chat: chats) {
+		for (ChatHistory chat: chats) {
 			User fromUser = chat.getFromUser();
 			User toUser = chat.getToUser();
 			if (fromUser.equals(user)) {
@@ -83,12 +89,29 @@ public class ChatController {
 		User toUser = userRepository.findById(dto.getToUser()).orElseThrow(
 				() -> new UsernameNotFoundException("User not found"));
 
+		List<ChatHistory> chatHistories1 = chatHistoryRepository.findAllByFromUserAndToUser(fromUser, toUser);
+		List<ChatHistory> chatHistories2 = chatHistoryRepository.findAllByFromUserAndToUser(toUser, fromUser);
+		ChatHistory chatHistory = new ChatHistory();
+		if (chatHistories1.size() == 0 && chatHistories2.size() == 0) {
+			chatHistory.setFromUser(fromUser);
+			chatHistory.setToUser(toUser);
+		} else {
+			if (chatHistories1.size() > 0) {
+				chatHistory = chatHistories1.get(0);
+			} else {
+				chatHistory = chatHistories2.get(0);
+			}
+			chatHistory.setLastUpdated(new Date());
+		}
+
 		chat.setContent(dto.getContent());
 		chat.setFromUser(fromUser);
 		chat.setToUser(toUser);
 		chat.setSourceVisible(true);
 		chat.setDestinationVisible(true);
+
 		Chat savedChat = chatRepository.save(chat);
+		ChatHistory ch = chatHistoryRepository.save(chatHistory);
 		return savedChat.getId();
 	}
 }
