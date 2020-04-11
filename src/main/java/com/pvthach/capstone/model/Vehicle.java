@@ -1,8 +1,12 @@
 package com.pvthach.capstone.model;
 
 
+import com.pvthach.capstone.dto.VehicleDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by THACH-PC
@@ -81,5 +85,24 @@ public class Vehicle implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public VehicleDTO convertToDTO() {
+        VehicleDTO dto = new VehicleDTO();
+        dto.setId(id);
+        dto.setName(name);
+        dto.setPhoto(photo);
+        dto.setPricePerKm(pricePerKm);
+        dto.setWeightCarry(weightCarry);
+
+        return dto;
+    }
+
+    public static List<VehicleDTO> convertToDTOs(List<Vehicle> dishes) {
+        List<VehicleDTO> dtos = new ArrayList<VehicleDTO>();
+        for (Vehicle v : dishes) {
+            dtos.add(v.convertToDTO());
+        }
+        return dtos;
     }
 }

@@ -9,19 +9,19 @@ import java.io.Serializable;
 
 public class OrderItemRequestDTO implements Serializable {
 
-    private Long dishId;
+    private Long productId;
 
     private Integer quantity;
 
     public OrderItemRequestDTO() {
     }
 
-    public Long getDishId() {
-        return dishId;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setDishId(Long dishId) {
-        this.dishId = dishId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Integer getQuantity() {

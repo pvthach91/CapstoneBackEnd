@@ -3,10 +3,13 @@ package com.pvthach.capstone.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.pvthach.capstone.dto.RateDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by THACH-PC
@@ -78,5 +81,24 @@ public class Rate implements Serializable {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public RateDTO convertToDTO() {
+        RateDTO dto = new RateDTO();
+        dto.setId(id);
+        dto.setStar(star);
+        dto.setDateCreated(dateCreated);
+        dto.setRatedBy(ratedBy.getName());
+
+        return dto;
+    }
+
+    public static List<RateDTO> convertToDTOs(List<Rate> list) {
+        List<RateDTO> result = new ArrayList<RateDTO>();
+        for (Rate c : list) {
+            result.add(c.convertToDTO());
+        }
+
+        return result;
     }
 }

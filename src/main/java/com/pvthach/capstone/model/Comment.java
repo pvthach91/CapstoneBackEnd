@@ -3,9 +3,11 @@ package com.pvthach.capstone.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.pvthach.capstone.dto.CommentDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -90,5 +92,24 @@ public class Comment implements Serializable {
 
     public void setSubComments(List<SubComment> subComments) {
         this.subComments = subComments;
+    }
+
+    public CommentDTO convertToDTO() {
+        CommentDTO dto = new CommentDTO();
+        dto.setId(id);
+        dto.setContent(content);
+        dto.setDateCreated(dateCreated);
+        dto.setCommentedBy(commentedBy.getName());
+
+        return dto;
+    }
+
+    public static List<CommentDTO> convertToDTOs(List<Comment> list) {
+        List<CommentDTO> result = new ArrayList<CommentDTO>();
+        for (Comment c : list) {
+            result.add(c.convertToDTO());
+        }
+
+        return result;
     }
 }

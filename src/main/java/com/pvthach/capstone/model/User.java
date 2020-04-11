@@ -4,6 +4,7 @@ package com.pvthach.capstone.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pvthach.capstone.dto.UserDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -63,20 +64,8 @@ public class User implements Serializable {
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<Farm> farms = new ArrayList<Farm>();
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<Vehicle> vehicles = new ArrayList<Vehicle>();
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<Product> products = new ArrayList<Product>();
-//
-//    @OneToMany(mappedBy = "ratedBy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<Rate> rates = new ArrayList<Rate>();
-//
-//    @OneToMany(mappedBy = "orderBy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<Ordering> orders = new ArrayList<Ordering>();
+    @Column(name = "MESSAGES")
+    private String messages;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_ROLE",
@@ -201,45 +190,13 @@ public class User implements Serializable {
         this.longitude = longitude;
     }
 
-//    public List<Farm> getFarms() {
-//        return farms;
-//    }
-//
-//    public void setFarms(List<Farm> farms) {
-//        this.farms = farms;
-//    }
-//
-//    public List<Vehicle> getVehicles() {
-//        return vehicles;
-//    }
-//
-//    public void setVehicles(List<Vehicle> vehicles) {
-//        this.vehicles = vehicles;
-//    }
-//
-//    public List<Product> getProducts() {
-//        return products;
-//    }
-//
-//    public void setProducts(List<Product> products) {
-//        this.products = products;
-//    }
-//
-//    public List<Rate> getRates() {
-//        return rates;
-//    }
-//
-//    public void setRates(List<Rate> rates) {
-//        this.rates = rates;
-//    }
-//
-//    public List<Ordering> getOrders() {
-//        return orders;
-//    }
-//
-//    public void setOrders(List<Ordering> orders) {
-//        this.orders = orders;
-//    }
+    public String getMessages() {
+        return messages;
+    }
+
+    public void setMessages(String messages) {
+        this.messages = messages;
+    }
 
     public boolean containRole(long role) {
         for (Role r: roles) {
@@ -248,5 +205,48 @@ public class User implements Serializable {
             }
         }
         return false;
+    }
+
+    public UserDTO convertToDTO() {
+        UserDTO dto = new UserDTO();
+        dto.setId(id);
+        dto.setName(name);
+        dto.setUsername(username);
+        dto.setEmail(email);
+        dto.setPhone(phone);
+        dto.setAddress(address);
+        dto.setJoinDate(joinDate);
+        dto.setPhoto(photo);
+        dto.setLatitude(latitude);
+        dto.setLongitude(longitude);
+        dto.setActive(isActive);
+        Iterator iter = roles.iterator();
+        Role role = (Role) iter.next();
+        dto.setRole(role.getName().name());
+        String[] msgArray = messages.split(";");
+        List<String> msgList = new ArrayList<String>();
+        for (String img : msgArray) {
+            msgList.add(img);
+        }
+        dto.setMessages(msgList);
+
+        return dto;
+    }
+
+    public static List<UserDTO> convertToDTOs(List<User> users) {
+        List<UserDTO> dtos = new ArrayList<UserDTO>();
+        for (User u : users) {
+            dtos.add(u.convertToDTO());
+        }
+
+        return dtos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id);
     }
 }

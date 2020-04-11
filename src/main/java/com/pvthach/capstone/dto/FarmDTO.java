@@ -1,5 +1,4 @@
-package com.pvthach.capstone.dto.request;
-
+package com.pvthach.capstone.dto;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,18 +7,26 @@ import java.util.List;
  * Created by THACH-PC
  */
 
-public class OrderRequestDTO implements Serializable {
+public class FarmDTO implements Serializable {
+    private Long id;
+
     private String address;
+
+    private List<String> images;
 
     private Double latitude;
 
     private Double longitude;
 
-    private Integer totalPrice;
+    public FarmDTO() {
+    }
 
-    private List<OrderItemRequestDTO> items;
+    public Long getId() {
+        return id;
+    }
 
-    public OrderRequestDTO() {
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAddress() {
@@ -28,6 +35,14 @@ public class OrderRequestDTO implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public Double getLatitude() {
@@ -44,21 +59,5 @@ public class OrderRequestDTO implements Serializable {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
-    }
-
-    public Integer getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Integer totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public List<OrderItemRequestDTO> getItems() {
-        return items;
-    }
-
-    public void setItems(List<OrderItemRequestDTO> items) {
-        this.items = items;
     }
 }

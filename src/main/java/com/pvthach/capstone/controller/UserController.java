@@ -1,5 +1,6 @@
 package com.pvthach.capstone.controller;
 
+import com.pvthach.capstone.dto.UserDTO;
 import com.pvthach.capstone.message.request.ChangePasswordForm;
 import com.pvthach.capstone.message.request.SignUpForm;
 import com.pvthach.capstone.message.response.*;
@@ -48,61 +49,40 @@ public class UserController {
 	@Autowired
 	RoleRepository roleRepository;
 	
-//	@GetMapping("/api/users")
-//	@PreAuthorize("hasRole('ADMIN')")
-//	public List<User> getUsers() {
-//		return userRepository.findAll();
-//	}
-
 	@PostMapping("/api/users")
 	@PreAuthorize("hasRole('ADMIN')")
-	public Page<List<User>> getUsers(@RequestBody UserCriteriaSearch criteria) {
+	public Page<List<UserDTO>> getUsers(@RequestBody UserCriteriaSearch criteria) {
 		return userRepository.searchUsers(criteria);
 	}
 
 	@GetMapping("/api/currentUser")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('PM')")
-	public User getCurrentUser() {
+	@PreAuthorize("hasRole('FARMER') or hasRole('ADMIN') or hasRole('PM') or hasRole('BUYER') or hasRole('DRIVER')")
+	public UserDTO getCurrentUser() {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		User savedUser = userRepository.findByUsername(username).
 				orElseThrow(() -> new RuntimeException(EnumResponse.USERNAME_NOT_FOUND.getDescription()));
 
-		return savedUser;
+		UserDTO dto = savedUser.convertToDTO();
+
+		return dto;
 	}
 
 	@GetMapping("/api/user/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public User getUser(@PathVariable Long id) {
+	public UserDTO getUser(@PathVariable Long id) {
 
 		User savedUser = userRepository.findById(id).
 				orElseThrow(() -> new RuntimeException(EnumResponse.USERNAME_NOT_FOUND.getDescription()));
 
-		return savedUser;
-	}
+		UserDTO dto = savedUser.convertToDTO();
 
-	@PostMapping("/api/user/promoteToAdmin/{username}")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ApiResponse<User> promoteToAdmin(@PathVariable String username) {
-
-		User savedUser = userRepository.findByUsername(username).
-				orElseThrow(() -> new RuntimeException(EnumResponse.USERNAME_NOT_FOUND.getDescription()));
-
-		Set<Role> roles = new HashSet<Role>();
-
-		Role userRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-				.orElseThrow(() -> new RuntimeException(EnumResponse.ROLE_NOT_FOUND.getDescription()));
-		roles.add(userRole);
-
-		savedUser.setRoles(roles);
-		User u = userRepository.save(savedUser);
-
-		return Response.successResult(u);
+		return dto;
 	}
 
 	@PostMapping("/api/user/deactivate/{username}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ApiResponse<User> deactivateUser(@PathVariable String username) {
+	public ApiResponse<Long> deactivateUser(@PathVariable String username) {
 
 		User savedUser = userRepository.findByUsername(username).
 				orElseThrow(() -> new RuntimeException(EnumResponse.USERNAME_NOT_FOUND.getDescription()));
@@ -110,12 +90,12 @@ public class UserController {
 		savedUser.setActive(false);
 		User u = userRepository.save(savedUser);
 
-		return Response.successResult(u);
+		return Response.successResult(u.getId());
 	}
 
 	@PostMapping("/api/user/activate/{username}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ApiResponse<User> activateUser(@PathVariable String username) {
+	public ApiResponse<Long> activateUser(@PathVariable String username) {
 
 		User savedUser = userRepository.findByUsername(username).
 				orElseThrow(() -> new RuntimeException(EnumResponse.USERNAME_NOT_FOUND.getDescription()));
@@ -123,11 +103,11 @@ public class UserController {
 		savedUser.setActive(true);
 		User u = userRepository.save(savedUser);
 
-		return Response.successResult(u);
+		return Response.successResult(u.getId());
 	}
 
 	@PostMapping("/changePassword")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('PM')")
+	@PreAuthorize("hasRole('FARMER') or hasRole('ADMIN') or hasRole('PM') or hasRole('BUYER') or hasRole('DRIVER')")
 	public ApiResponse<String> changePassword(@Valid @RequestBody ChangePasswordForm form) {
 		String oldPassword = form.getOldPassword();
 		String newPassword = form.getNewPassword();

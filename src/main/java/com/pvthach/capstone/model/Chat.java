@@ -1,10 +1,13 @@
 package com.pvthach.capstone.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.pvthach.capstone.dto.ChatDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by THACH-PC
@@ -98,5 +101,27 @@ public class Chat implements Serializable {
 
     public void setDestinationVisible(Boolean destinationVisible) {
         this.destinationVisible = destinationVisible;
+    }
+
+    public ChatDTO convertToDTO() {
+        ChatDTO dto = new ChatDTO();
+        dto.setId(id);
+        dto.setContent(content);
+        dto.setDateCreated(dateCreated);
+        dto.setFromUser(fromUser.convertToDTO());
+        dto.setToUser(toUser.convertToDTO());
+        dto.setSourceVisible(sourceVisible);
+        dto.setDestinationVisible(destinationVisible);
+
+        return dto;
+    }
+
+    public static List<ChatDTO> convertToDTOs(List<Chat> list) {
+        List<ChatDTO> result = new ArrayList<ChatDTO>();
+        for (Chat c : list) {
+            result.add(c.convertToDTO());
+        }
+
+        return result;
     }
 }

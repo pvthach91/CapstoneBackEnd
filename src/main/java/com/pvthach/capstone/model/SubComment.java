@@ -3,10 +3,13 @@ package com.pvthach.capstone.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.pvthach.capstone.dto.SubCommentDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by THACH-PC
@@ -78,5 +81,24 @@ public class SubComment implements Serializable {
 
     public void setComment(Comment comment) {
         this.comment = comment;
+    }
+
+    public SubCommentDTO convertToDTO() {
+        SubCommentDTO dto = new SubCommentDTO();
+        dto.setId(id);
+        dto.setContent(content);
+        dto.setDateCreated(dateCreated);
+        dto.setCommentedBy(commentedBy.getName());
+
+        return dto;
+    }
+
+    public static List<SubCommentDTO> convertToDTOs(List<SubComment> list) {
+        List<SubCommentDTO> result = new ArrayList<SubCommentDTO>();
+        for (SubComment c : list) {
+            result.add(c.convertToDTO());
+        }
+
+        return result;
     }
 }

@@ -1,12 +1,9 @@
-package com.pvthach.capstone.model;
+package com.pvthach.capstone.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pvthach.capstone.dto.ProductDTO;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,51 +11,33 @@ import java.util.List;
  * Created by THACH-PC
  */
 
-@Table(name = "PRODUCT")
-@Entity(name = "Product")
-public class Product implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+public class ProductDTO implements Serializable {
     private Long id;
 
-    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "CATEGORY", nullable = false)
     private String category;
 
-    @Column(name = "PRICE", nullable = false)
     private Integer price;
 
-    @Column(name = "PROMOTION_PRICE", nullable = false)
     private Integer promotionPrice;
 
-    @Column(name = "PROMOTION_ACTIVE", nullable = false)
     private Boolean promotionActive;
 
-    @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
-    @Column(name = "IMAGES", nullable = false)
-    private String images;
+    private List<String> images;
 
-    @Column(name = "DATE_CREATED")
-    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dateCreated;
 
-    @Column(name = "LATITUDE", nullable = false)
     private Double latitude;
 
-    @Column(name = "LONGITUDE", nullable = false)
     private Double longitude;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="USER_ID")
-    private User user;
+    private UserDTO user;
 
-    public Product() {
+    public ProductDTO() {
         this.dateCreated = new Date();
     }
 
@@ -118,11 +97,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public String getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(String images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 
@@ -150,44 +129,11 @@ public class Product implements Serializable {
         this.longitude = longitude;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
-
-    public ProductDTO convertToDTO() {
-        ProductDTO dto = new ProductDTO();
-        dto.setId(id);
-        dto.setName(name);
-        dto.setCategory(category);
-        dto.setPrice(price);
-        dto.setPromotionPrice(promotionPrice);
-        dto.setPromotionActive(promotionActive);
-        dto.setDescription(description);
-        String[] imgArray = images.split(";");
-        List<String> imgList = new ArrayList<String>();
-        for (String img : imgArray) {
-            imgList.add(img);
-        }
-        dto.setImages(imgList);
-        dto.setDateCreated(dateCreated);
-        dto.setLatitude(latitude);
-        dto.setLongitude(longitude);
-        dto.setUser(user.convertToDTO());
-
-        return dto;
-    }
-
-    public static List<ProductDTO> convertToDTOs(List<Product> list) {
-        List<ProductDTO> result = new ArrayList<ProductDTO>();
-        for (Product p : list) {
-            result.add(p.convertToDTO());
-        }
-
-        return result;
-    }
-
 }

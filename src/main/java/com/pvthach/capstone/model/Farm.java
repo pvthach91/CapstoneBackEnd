@@ -1,8 +1,12 @@
 package com.pvthach.capstone.model;
 
 
+import com.pvthach.capstone.dto.FarmDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by THACH-PC
@@ -81,5 +85,29 @@ public class Farm implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public FarmDTO convertToDTO() {
+        FarmDTO dto = new FarmDTO();
+        dto.setId(id);
+        dto.setAddress(address);
+        String[] imgArray = images.split(";");
+        List<String> imgList = new ArrayList<String>();
+        for (String img : imgArray) {
+            imgList.add(img);
+        }
+        dto.setImages(imgList);
+        dto.setLatitude(latitude);
+        dto.setLongitude(longitude);
+
+        return dto;
+    }
+
+    public static List<FarmDTO> convertToDTOs(List<Farm> dishes) {
+        List<FarmDTO> dtos = new ArrayList<FarmDTO>();
+        for (Farm farm : dishes) {
+            dtos.add(farm.convertToDTO());
+        }
+        return dtos;
     }
 }

@@ -3,10 +3,13 @@ package com.pvthach.capstone.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pvthach.capstone.dto.OrderDTO;
+import com.pvthach.capstone.ultil.DateFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -140,24 +143,30 @@ public class Ordering implements Serializable {
         this.longitude = longitude;
     }
 
-//    public OrderDTO convertToDTO () {
-//        String pattern = "yyyy-MM-dd HH:mm:ss";
-//        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-//        OrderDTO dto = new OrderDTO();
-//        dto.setId(id);
-//        dto.setOrderId(orderId);
-//        dto.setDate(sdf.format(date));
-////        dto.setOrderBy(orderBy);
-////        dto.setEmail(email);
-////        dto.setPhone(phone);
-//        dto.setAddress(address);
-//        dto.setTotalPrice(totalPrice);
-//        dto.setStatus(status);
-////        dto.setOrderType(orderType);
-//        dto.setItems(OrderItem.convertToDTOs(items));
-//
-//        return dto;
-//    }
+    public OrderDTO convertToDTO () {
+        OrderDTO dto = new OrderDTO();
+        dto.setId(id);
+        dto.setOrderId(orderId);
+        dto.setDate(DateFormat.format(date));
+        dto.setOrderBy(orderBy.convertToDTO());
+        dto.setAddress(address);
+        dto.setLatitude(latitude);
+        dto.setLongitude(longitude);
+        dto.setTotalPrice(totalPrice);
+        dto.setStatus(status);
+        dto.setItems(OrderItem.convertToDTOs(items));
+
+        return dto;
+    }
+
+    public static List<OrderDTO> convertToDTOs(List<Ordering> items) {
+        List<OrderDTO> dtos = new ArrayList<OrderDTO>();
+        for (Ordering item : items) {
+            dtos.add(item.convertToDTO());
+        }
+
+        return dtos;
+    }
 
     private String generateUniqueOrderId() {
         String pattern = "yyyyMMddHHmmss";

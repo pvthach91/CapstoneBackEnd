@@ -1,5 +1,6 @@
 package com.pvthach.capstone.repository.user;
 
+import com.pvthach.capstone.dto.UserDTO;
 import com.pvthach.capstone.model.Role;
 import com.pvthach.capstone.model.User;
 import com.pvthach.capstone.service.Page;
@@ -23,7 +24,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     EntityManager entityManager;
 
     @Override
-    public Page<List<User>> searchUsers(UserCriteriaSearch criteriaSearch) {
+    public Page<List<UserDTO>> searchUsers(UserCriteriaSearch criteriaSearch) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteria = builder.createQuery(User.class);
         Root<User> user = criteria.from(User.class);
@@ -92,10 +93,11 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             }
             result = subAll.subList(start, end);
         }
-        Page<List<User>> page = new Page<List<User>>();
+        List<UserDTO> resultDTOs = User.convertToDTOs(result);
+        Page<List<UserDTO>> page = new Page<List<UserDTO>>();
         page.setTotal(totalPage);
         page.setCurrent(currentPage);
-        page.setData(result);
+        page.setData(resultDTOs);
 
         return page;
 

@@ -17,4 +17,10 @@ public class DateFormat {
             return new Date();
         }
     }
+
+    public static String format(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        return simpleDateFormat.format(date);
+    }
 }

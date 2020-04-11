@@ -8,6 +8,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +22,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class FileUploadController {
-	@Value("${foodproducer.app.upload}")
+	@Value("${capstone.app.upload}")
 	private String UPLOAD_DIRECTORY;
 
 	@Autowired
@@ -37,22 +38,41 @@ public class FileUploadController {
 				.body(new InputStreamResource(resource.getInputStream()));
 	}
 
-	@PostMapping(value = "api/upload/uploadDishPhoto")
-//	@PreAuthorize("hasRole('SALE')")
-	public List<String> uploadDishes(@RequestParam("files") MultipartFile[] files) throws IOException {
+	@PostMapping(value = "api/upload/uploadFarm")
+	@PreAuthorize("hasRole('FARMER')")
+	public List<String> uploadFarm(@RequestParam("files") MultipartFile[] files) throws IOException {
 		if (files == null || files.length ==0) {
 			throw new IOException("There's no file to upload");
 		}
-		return fileStorage.saveDishPhotos(files);
+		return fileStorage.saveFarm(files);
 	}
 
-	@PostMapping(value = "api/upload/uploadEmployeePhoto")
-//	@PreAuthorize("hasRole('HR')")
-	public ApiResponse<String> uploadEmployeePhoto(@RequestParam("file") MultipartFile file) throws IOException {
+	@PostMapping(value = "api/upload/uploadProduct")
+	@PreAuthorize("hasRole('FARMER')")
+	public List<String> uploadProduct(@RequestParam("files") MultipartFile[] files) throws IOException {
+		if (files == null || files.length ==0) {
+			throw new IOException("There's no file to upload");
+		}
+		return fileStorage.saveProduct(files);
+	}
+
+	@PostMapping(value = "api/upload/uploadProfile")
+	@PreAuthorize("hasRole('FARMER') or hasRole('ADMIN') or hasRole('PM') or hasRole('BUYER')  or hasRole('DRIVER')")
+	public ApiResponse<String> uploadProfile(@RequestParam("file") MultipartFile file) throws IOException {
 		if (file == null) {
 			throw new IOException("There's no file to upload");
 		}
-		String result = fileStorage.saveEmployeePhoto(file);
+		String result = fileStorage.saveProfilePhoto(file);
+		return Response.successResult(result);
+	}
+
+	@PostMapping(value = "api/upload/uploadVehicle")
+	@PreAuthorize("hasRole('FARMER') or hasRole('DRIVER')")
+	public ApiResponse<String> uploadVehicle(@RequestParam("file") MultipartFile file) throws IOException {
+		if (file == null) {
+			throw new IOException("There's no file to upload");
+		}
+		String result = fileStorage.saveVehiclePhoto(file);
 		return Response.successResult(result);
 	}
 }
