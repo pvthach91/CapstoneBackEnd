@@ -2,6 +2,7 @@ package com.pvthach.capstone.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pvthach.capstone.dto.ChatDTO;
+import com.pvthach.capstone.ultil.DateFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -107,7 +108,7 @@ public class Chat implements Serializable {
         ChatDTO dto = new ChatDTO();
         dto.setId(id);
         dto.setContent(content);
-        dto.setDateCreated(dateCreated);
+        dto.setDateCreated(DateFormat.format(dateCreated));
         dto.setFromUser(fromUser.convertToDTO());
         dto.setToUser(toUser.convertToDTO());
         dto.setSourceVisible(sourceVisible);

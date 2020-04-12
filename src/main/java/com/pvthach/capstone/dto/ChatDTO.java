@@ -15,7 +15,7 @@ public class ChatDTO implements Serializable {
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date dateCreated;
+    private String dateCreated;
 
     private UserDTO fromUser;
 
@@ -26,7 +26,6 @@ public class ChatDTO implements Serializable {
     private Boolean destinationVisible;
 
     public ChatDTO() {
-        this.dateCreated = new Date();
     }
 
     public Long getId() {
@@ -45,11 +44,11 @@ public class ChatDTO implements Serializable {
         this.content = content;
     }
 
-    public Date getDateCreated() {
+    public String getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 

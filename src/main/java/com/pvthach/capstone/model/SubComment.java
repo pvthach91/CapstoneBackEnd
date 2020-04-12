@@ -88,7 +88,7 @@ public class SubComment implements Serializable {
         dto.setId(id);
         dto.setContent(content);
         dto.setDateCreated(dateCreated);
-        dto.setCommentedBy(commentedBy.getName());
+        dto.setCommentedBy(commentedBy.convertToDTO());
 
         return dto;
     }

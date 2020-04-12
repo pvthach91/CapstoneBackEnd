@@ -3,10 +3,11 @@ package com.pvthach.capstone.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pvthach.capstone.model.Role;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by THACH-PC
@@ -26,7 +27,7 @@ public class UserDTO implements Serializable {
     private String address;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date joinDate;
+    private String joinDate;
 
     private String photo;
 
@@ -37,7 +38,7 @@ public class UserDTO implements Serializable {
     @JsonProperty("isActive")
     private Boolean isActive;
 
-    private String role;
+    private Set<Role> role;
 
     private List<String> messages;
 
@@ -91,11 +92,11 @@ public class UserDTO implements Serializable {
         this.address = address;
     }
 
-    public Date getJoinDate() {
+    public String getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(String joinDate) {
         this.joinDate = joinDate;
     }
 
@@ -131,11 +132,11 @@ public class UserDTO implements Serializable {
         isActive = active;
     }
 
-    public String getRole() {
+    public Set<Role> getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Set<Role> role) {
         this.role = role;
     }
 

@@ -1,4 +1,4 @@
-package com.pvthach.capstone.service;
+package com.pvthach.capstone.dto;
 
 
 import java.io.Serializable;

@@ -1,9 +1,8 @@
 package com.pvthach.capstone.repository.user;
 
 import com.pvthach.capstone.dto.UserDTO;
-import com.pvthach.capstone.model.User;
 import com.pvthach.capstone.service.Page;
-import com.pvthach.capstone.service.UserCriteriaSearch;
+import com.pvthach.capstone.dto.UserCriteriaSearch;
 
 import java.util.List;
 

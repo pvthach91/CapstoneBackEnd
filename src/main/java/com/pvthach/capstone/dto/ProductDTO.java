@@ -4,7 +4,6 @@ package com.pvthach.capstone.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class ProductDTO implements Serializable {
     private List<String> images;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date dateCreated;
+    private String dateCreated;
 
     private Double latitude;
 
@@ -38,7 +37,6 @@ public class ProductDTO implements Serializable {
     private UserDTO user;
 
     public ProductDTO() {
-        this.dateCreated = new Date();
     }
 
     public Long getId() {
@@ -105,11 +103,11 @@ public class ProductDTO implements Serializable {
         this.images = images;
     }
 
-    public Date getDateCreated() {
+    public String getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 

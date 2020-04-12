@@ -13,12 +13,10 @@ import com.pvthach.capstone.repository.user.UserRepository;
 import com.pvthach.capstone.service.MailService;
 import com.pvthach.capstone.service.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +42,8 @@ public class OrderController {
 	@Autowired
 	MailService mailService;
 
+
+	// Get orders by buyer farmer and pm
 	@PostMapping("/api/orders")
 	@PreAuthorize("hasRole('FARMER') or hasRole('BUYER') or hasRole('PM')")
 	public Page<List<OrderDTO>> getOrders(@RequestBody OrderSearchCriteria searchCriteria) {

@@ -16,12 +16,11 @@ public class CommentDTO implements Serializable {
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date dateCreated;
+    private String dateCreated;
 
-    private String commentedBy;
+    private UserDTO commentedBy;
 
     public CommentDTO() {
-        this.dateCreated = new Date();
     }
 
     public Long getId() {
@@ -40,19 +39,19 @@ public class CommentDTO implements Serializable {
         this.content = content;
     }
 
-    public Date getDateCreated() {
+    public String getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public String getCommentedBy() {
+    public UserDTO getCommentedBy() {
         return commentedBy;
     }
 
-    public void setCommentedBy(String commentedBy) {
+    public void setCommentedBy(UserDTO commentedBy) {
         this.commentedBy = commentedBy;
     }
 }

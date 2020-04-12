@@ -44,10 +44,10 @@ public class FarmerController {
 		return Farm.convertToDTOs(farms);
 	}
 	@GetMapping("/api/guest/farm/{id}")
-	public FarmDTO getFarm(@PathVariable Long id) {
+	public ApiResponse<FarmDTO> getFarm(@PathVariable Long id) {
 		Farm farm = farmRepository.getOne(id);
 		FarmDTO dto = farm.convertToDTO();
-		return dto;
+		return Response.successResult(dto);
 	}
 
 	@GetMapping("/api/guest/vehicles/{id}")
@@ -60,10 +60,10 @@ public class FarmerController {
 	}
 
 	@GetMapping("/api/guest/vehicle/{id}")
-	public VehicleDTO getVehicle(@PathVariable Long id) {
+	public ApiResponse<VehicleDTO> getVehicle(@PathVariable Long id) {
 		Vehicle vehicle = vehicleRepository.getOne(id);
 		VehicleDTO dto = vehicle.convertToDTO();
-		return dto;
+		return Response.successResult(dto);
 	}
 
 

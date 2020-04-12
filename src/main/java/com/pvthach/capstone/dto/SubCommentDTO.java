@@ -17,7 +17,7 @@ public class SubCommentDTO implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dateCreated;
 
-    private String commentedBy;
+    private UserDTO commentedBy;
 
     public SubCommentDTO() {
         this.dateCreated = new Date();
@@ -47,11 +47,11 @@ public class SubCommentDTO implements Serializable {
         this.dateCreated = dateCreated;
     }
 
-    public String getCommentedBy() {
+    public UserDTO getCommentedBy() {
         return commentedBy;
     }
 
-    public void setCommentedBy(String commentedBy) {
+    public void setCommentedBy(UserDTO commentedBy) {
         this.commentedBy = commentedBy;
     }
 }

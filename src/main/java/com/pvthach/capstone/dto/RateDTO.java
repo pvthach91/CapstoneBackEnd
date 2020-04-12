@@ -16,12 +16,11 @@ public class RateDTO implements Serializable {
     private Integer star;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date dateCreated;
+    private String dateCreated;
 
-    private String ratedBy;
+    private UserDTO ratedBy;
 
     public RateDTO() {
-        this.dateCreated = new Date();
     }
 
     public Long getId() {
@@ -40,19 +39,19 @@ public class RateDTO implements Serializable {
         this.star = star;
     }
 
-    public Date getDateCreated() {
+    public String getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public String getRatedBy() {
+    public UserDTO getRatedBy() {
         return ratedBy;
     }
 
-    public void setRatedBy(String ratedBy) {
+    public void setRatedBy(UserDTO ratedBy) {
         this.ratedBy = ratedBy;
     }
 }

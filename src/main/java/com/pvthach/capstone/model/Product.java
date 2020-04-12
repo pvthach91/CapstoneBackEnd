@@ -3,6 +3,7 @@ package com.pvthach.capstone.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pvthach.capstone.dto.ProductDTO;
+import com.pvthach.capstone.ultil.DateFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -173,7 +174,7 @@ public class Product implements Serializable {
             imgList.add(img);
         }
         dto.setImages(imgList);
-        dto.setDateCreated(dateCreated);
+        dto.setDateCreated(DateFormat.format(dateCreated));
         dto.setLatitude(latitude);
         dto.setLongitude(longitude);
         dto.setUser(user.convertToDTO());

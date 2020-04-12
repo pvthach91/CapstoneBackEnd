@@ -4,7 +4,7 @@ import com.pvthach.capstone.dto.UserDTO;
 import com.pvthach.capstone.model.Role;
 import com.pvthach.capstone.model.User;
 import com.pvthach.capstone.service.Page;
-import com.pvthach.capstone.service.UserCriteriaSearch;
+import com.pvthach.capstone.dto.UserCriteriaSearch;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

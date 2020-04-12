@@ -4,6 +4,7 @@ package com.pvthach.capstone.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pvthach.capstone.dto.RateDTO;
+import com.pvthach.capstone.ultil.DateFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -87,8 +88,8 @@ public class Rate implements Serializable {
         RateDTO dto = new RateDTO();
         dto.setId(id);
         dto.setStar(star);
-        dto.setDateCreated(dateCreated);
-        dto.setRatedBy(ratedBy.getName());
+        dto.setDateCreated(DateFormat.format(dateCreated));
+        dto.setRatedBy(ratedBy.convertToDTO());
 
         return dto;
     }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pvthach.capstone.dto.UserDTO;
+import com.pvthach.capstone.ultil.DateFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -215,14 +216,12 @@ public class User implements Serializable {
         dto.setEmail(email);
         dto.setPhone(phone);
         dto.setAddress(address);
-        dto.setJoinDate(joinDate);
+        dto.setJoinDate(DateFormat.format(joinDate));
         dto.setPhoto(photo);
         dto.setLatitude(latitude);
         dto.setLongitude(longitude);
         dto.setActive(isActive);
-        Iterator iter = roles.iterator();
-        Role role = (Role) iter.next();
-        dto.setRole(role.getName().name());
+        dto.setRole(roles);
         String[] msgArray = messages.split(";");
         List<String> msgList = new ArrayList<String>();
         for (String img : msgArray) {

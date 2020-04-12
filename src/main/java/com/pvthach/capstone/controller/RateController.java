@@ -33,7 +33,7 @@ public class RateController {
 	ProductRepository productRepository;
 
 	@GetMapping("/api/guest/rates/{id}")
-	public List<RateDTO> getComments(@PathVariable Long id) {
+	public List<RateDTO> getRates(@PathVariable Long id) {
 		Product product = productRepository.findById(id).orElseThrow(
 				() -> new UsernameNotFoundException("Product not found"));
 
@@ -43,7 +43,7 @@ public class RateController {
 
 	@PostMapping("/api/rate/addRate/{productId}")
 	@PreAuthorize("hasRole('FARMER') or hasRole('BUYER')")
-	public Long addComment(@RequestBody RateDTO dto, @PathVariable Long productId) {
+	public Long addRate(@RequestBody RateDTO dto, @PathVariable Long productId) {
 		Rate rate = new Rate();
 
 		if (dto.getId() != null) {

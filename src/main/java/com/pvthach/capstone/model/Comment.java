@@ -4,6 +4,7 @@ package com.pvthach.capstone.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pvthach.capstone.dto.CommentDTO;
+import com.pvthach.capstone.ultil.DateFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -98,8 +99,8 @@ public class Comment implements Serializable {
         CommentDTO dto = new CommentDTO();
         dto.setId(id);
         dto.setContent(content);
-        dto.setDateCreated(dateCreated);
-        dto.setCommentedBy(commentedBy.getName());
+        dto.setDateCreated(DateFormat.format(dateCreated));
+        dto.setCommentedBy(commentedBy.convertToDTO());
 
         return dto;
     }

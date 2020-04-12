@@ -10,7 +10,7 @@ import com.pvthach.capstone.model.User;
 import com.pvthach.capstone.repository.user.RoleRepository;
 import com.pvthach.capstone.repository.user.UserRepository;
 import com.pvthach.capstone.service.Page;
-import com.pvthach.capstone.service.UserCriteriaSearch;
+import com.pvthach.capstone.dto.UserCriteriaSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;

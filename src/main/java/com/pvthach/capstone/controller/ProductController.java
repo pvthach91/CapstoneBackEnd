@@ -7,6 +7,7 @@ import com.pvthach.capstone.message.response.Response;
 import com.pvthach.capstone.model.Comment;
 import com.pvthach.capstone.model.Product;
 import com.pvthach.capstone.model.Rate;
+import com.pvthach.capstone.model.User;
 import com.pvthach.capstone.repository.CommentRepository;
 import com.pvthach.capstone.repository.RateRepository;
 import com.pvthach.capstone.repository.product.ProductRepository;
@@ -14,6 +15,7 @@ import com.pvthach.capstone.repository.user.UserRepository;
 import com.pvthach.capstone.service.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,13 +43,13 @@ public class ProductController {
 	UserRepository userRepository;
 
 	@GetMapping("/api/guest/products")
-	public Page<List<ProductDTO>> getDishes(@PathVariable Integer currentPage, @PathVariable Integer pageSize) {
+	public Page<List<ProductDTO>> getDishes() {
 		// Recommendation will be applied here
-		return productRepository.searchProducts(currentPage, pageSize);
+		return productRepository.searchProducts(1, 1000);
 	}
 
 	@GetMapping("/api/guest/product/{id}")
-	public ApiResponse<ProductDetailDTO> getDish(@PathVariable Long id) {
+	public ApiResponse<ProductDetailDTO> getProduct(@PathVariable Long id) {
 		Optional<Product> productDetail = productRepository.findById(id);
 		if (!productDetail.isPresent()) {
 			return Response.failedResult("Failed to get product");
@@ -70,14 +72,14 @@ public class ProductController {
 	}
 
 	@PostMapping("/api/product/delete/{id}")
-	@PreAuthorize("hasRole('SALE')")
-	public ApiResponse<String> deleteDish(@PathVariable Long id) {
+	@PreAuthorize("hasRole('FARMER')")
+	public ApiResponse<String> deleteProduct(@PathVariable Long id) {
 		productRepository.deleteById(id);
 		return Response.successResult("Product has been deleted successfully");
 	}
 
 	@PostMapping("/api/product/add")
-	@PreAuthorize("hasRole('SALE')")
+	@PreAuthorize("hasRole('FARMER')")
 	public ProductDTO addProduct(@RequestBody ProductDTO dto) {
 		Product product = new Product();
 
@@ -85,6 +87,9 @@ public class ProductController {
 			product = productRepository.findById(dto.getId()).orElseThrow(
 					() -> new UsernameNotFoundException("Product is invalid"));
 		}
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found"));
 
 		product.setName(dto.getName());
 		product.setCategory(dto.getCategory());
@@ -96,6 +101,7 @@ public class ProductController {
 		product.setImages(img);
 		product.setLatitude(dto.getLatitude());
 		product.setLongitude(dto.getLongitude());
+		product.setUser(user);
 		Product savedProduct = productRepository.save(product);
 
 		return savedProduct.convertToDTO();
