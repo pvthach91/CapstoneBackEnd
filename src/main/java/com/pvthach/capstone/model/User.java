@@ -221,13 +221,13 @@ public class User implements Serializable {
         dto.setLatitude(latitude);
         dto.setLongitude(longitude);
         dto.setActive(isActive);
-        dto.setRole(roles);
-        String[] msgArray = messages.split(";");
-        List<String> msgList = new ArrayList<String>();
-        for (String img : msgArray) {
-            msgList.add(img);
-        }
-        dto.setMessages(msgList);
+        dto.setRoles(roles);
+//        String[] msgArray = messages.split(";");
+//        List<String> msgList = new ArrayList<String>();
+//        for (String img : msgArray) {
+//            msgList.add(img);
+//        }
+//        dto.setMessages(msgList);
 
         return dto;
     }

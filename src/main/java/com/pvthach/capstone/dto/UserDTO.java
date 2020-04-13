@@ -38,7 +38,7 @@ public class UserDTO implements Serializable {
     @JsonProperty("isActive")
     private Boolean isActive;
 
-    private Set<Role> role;
+    private Set<Role> roles;
 
     private List<String> messages;
 
@@ -132,12 +132,12 @@ public class UserDTO implements Serializable {
         isActive = active;
     }
 
-    public Set<Role> getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public List<String> getMessages() {

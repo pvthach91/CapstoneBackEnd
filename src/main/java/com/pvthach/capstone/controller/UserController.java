@@ -68,6 +68,19 @@ public class UserController {
 		return dto;
 	}
 
+	@PostMapping("/api/user/changePhoto")
+	@PreAuthorize("hasRole('FARMER') or hasRole('ADMIN') or hasRole('PM') or hasRole('BUYER') or hasRole('DRIVER')")
+	public UserDTO changePhoto(@RequestBody UserDTO dto) {
+
+		User savedUser = userRepository.findByUsername(dto.getUsername()).
+				orElseThrow(() -> new RuntimeException(EnumResponse.USERNAME_NOT_FOUND.getDescription()));
+
+		savedUser.setPhoto(dto.getPhoto());
+		User u = userRepository.save(savedUser);
+
+		return u.convertToDTO();
+	}
+
 	@GetMapping("/api/user/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public UserDTO getUser(@PathVariable Long id) {

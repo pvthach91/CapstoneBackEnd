@@ -48,7 +48,7 @@ public class FileUploadController {
 	}
 
 	@PostMapping(value = "api/upload/uploadProduct")
-	@PreAuthorize("hasRole('FARMER')")
+	@PreAuthorize("hasRole('FARMER') or hasRole('ADMIN') or hasRole('PM') or hasRole('BUYER')  or hasRole('DRIVER')")
 	public List<String> uploadProduct(@RequestParam("files") MultipartFile[] files) throws IOException {
 		if (files == null || files.length ==0) {
 			throw new IOException("There's no file to upload");
