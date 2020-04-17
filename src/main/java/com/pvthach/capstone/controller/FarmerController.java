@@ -43,6 +43,18 @@ public class FarmerController {
 		List<Farm> farms = farmRepository.findAllByUser(user);
 		return Farm.convertToDTOs(farms);
 	}
+
+	@GetMapping("/api/guest/farms")
+	@PreAuthorize("hasRole('FARMER')")
+	public List<FarmDTO> getFarmsForCurrentUser() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found"));
+
+		List<Farm> farms = farmRepository.findAllByUser(user);
+		return Farm.convertToDTOs(farms);
+	}
+
 	@GetMapping("/api/guest/farm/{id}")
 	public ApiResponse<FarmDTO> getFarm(@PathVariable Long id) {
 		Farm farm = farmRepository.getOne(id);
@@ -53,6 +65,16 @@ public class FarmerController {
 	@GetMapping("/api/guest/vehicles/{id}")
 	public List<VehicleDTO> getVehicles(@PathVariable Long id) {
 		User user = userRepository.findById(id).orElseThrow(
+				() -> new UsernameNotFoundException("User not found"));
+
+		List<Vehicle> vehicles = vehicleRepository.findAllByUser(user);
+		return Vehicle.convertToDTOs(vehicles);
+	}
+
+	@GetMapping("/api/guest/vehicles")
+	public List<VehicleDTO> getVehiclesForCurrentUser() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException("User not found"));
 
 		List<Vehicle> vehicles = vehicleRepository.findAllByUser(user);
@@ -102,6 +124,20 @@ public class FarmerController {
 		farm.setUser(user);
 		Farm savedFarm = farmRepository.save(farm);
 		return savedFarm.getId();
+	}
+
+	@PostMapping("/api/farmer/changeFarmPhoto")
+	@PreAuthorize("hasRole('FARMER')")
+	public ApiResponse<FarmDTO> changeFarmPhoto(@RequestBody FarmDTO dto) {
+		Farm farm = farmRepository.findById(dto.getId()).orElseThrow(
+				() -> new UsernameNotFoundException("Farm is invalid"));
+
+		farm.setAddress(dto.getAddress());
+		String img = String.join(";", dto.getImages());
+		farm.setImages(img);
+		Farm savedFarm = farmRepository.save(farm);
+		FarmDTO savedDTO = savedFarm.convertToDTO();
+		return Response.successResult(savedDTO);
 	}
 
 	@PostMapping("/api/farmer/addVehicle")
