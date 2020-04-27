@@ -81,6 +81,21 @@ public class UserController {
 		return u.convertToDTO();
 	}
 
+	@PostMapping("/api/user/updateAddress")
+	@PreAuthorize("hasRole('FARMER')")
+	public UserDTO updateAddress(@RequestBody UserDTO dto) {
+
+		User savedUser = userRepository.findByUsername(dto.getUsername()).
+				orElseThrow(() -> new RuntimeException(EnumResponse.USERNAME_NOT_FOUND.getDescription()));
+
+		savedUser.setAddress(dto.getAddress());
+		savedUser.setLatitude(dto.getLatitude());
+		savedUser.setLongitude(dto.getLongitude());
+		User u = userRepository.save(savedUser);
+
+		return u.convertToDTO();
+	}
+
 	@GetMapping("/api/user/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public UserDTO getUser(@PathVariable Long id) {

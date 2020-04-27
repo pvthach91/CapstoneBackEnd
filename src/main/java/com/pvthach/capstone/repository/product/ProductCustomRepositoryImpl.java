@@ -1,6 +1,7 @@
 package com.pvthach.capstone.repository.product;
 
 import com.pvthach.capstone.dto.ProductDTO;
+import com.pvthach.capstone.dto.ProductSearchCriteria;
 import com.pvthach.capstone.model.Product;
 import com.pvthach.capstone.service.Page;
 import org.springframework.stereotype.Repository;
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,52 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
         page.setData(dtos);
 
         return page;
+    }
+
+    @Override
+    public List<Product> searchProducts(ProductSearchCriteria criteriaSearch) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
+        Root<Product> root = criteria.from(Product.class);
+
+
+        List<Predicate> conditions =  new ArrayList<Predicate>();
+
+        String name = criteriaSearch.getName();
+        if (name != null && name.length() > 0) {
+            conditions.add(builder.equal(root.get("name"), name));
+        }
+
+        String category = criteriaSearch.getCategory();
+        if (category != null && category.length() > 0) {
+            conditions.add(builder.equal(root.get("category"), category));
+        }
+
+        Boolean promotionActive = criteriaSearch.getPromotionActive();
+        if (promotionActive != null) {
+            conditions.add(builder.equal(root.get("promotionActive"), promotionActive));
+        }
+
+        Integer priceFrom = criteriaSearch.getPriceFrom();
+        Integer priceTo = criteriaSearch.getPriceTo();
+        if (priceFrom != null || priceTo != null) {
+            if (priceFrom != null) {
+                conditions.add(builder.greaterThanOrEqualTo(root.get("price"), priceFrom));
+            }
+            if (priceTo != null) {
+                conditions.add(builder.lessThanOrEqualTo(root.get("price"), priceTo));
+            }
+
+        }
+
+        Predicate[] cons = conditions.toArray(new Predicate[conditions.size()]);
+        if (cons.length >= 1){
+            criteria.where(cons);
+        }
+
+        List<Product> result = entityManager.createQuery(criteria).getResultList();
+
+        return result;
     }
 
     public long getCount(Integer currentPage, Integer pageSize) {

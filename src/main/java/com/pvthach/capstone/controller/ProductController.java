@@ -1,6 +1,7 @@
 package com.pvthach.capstone.controller;
 
 import com.pvthach.capstone.dto.ProductDTO;
+import com.pvthach.capstone.dto.ProductSearchCriteria;
 import com.pvthach.capstone.dto.response.ProductDetailDTO;
 import com.pvthach.capstone.message.response.ApiResponse;
 import com.pvthach.capstone.message.response.Response;
@@ -42,16 +43,27 @@ public class ProductController {
 	@Autowired
 	UserRepository userRepository;
 
-	@GetMapping("/api/guest/products")
-	public Page<List<ProductDTO>> getProducts() {
+	@PostMapping("/api/guest/products")
+	public List<ProductDTO> getProducts(@RequestBody ProductSearchCriteria criteriaSearch) {
+		List<Product> products = productRepository.searchProducts(criteriaSearch);
+
 		// Recommendation will be applied here
-		return productRepository.searchProducts(1, 1000);
+
+		//sort, state
+		List<ProductDTO> result = Product.convertToDTOs(products);
+		return result;
 	}
 
 	@GetMapping("/api/products")
-	public Page<List<ProductDTO>> getProductsForFarmer() {
+	public List<ProductDTO> getProductsForFarmer() {
+
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found"));
 		// Recommendation will be applied here
-		return productRepository.searchProducts(1, 1000);
+
+		List<Product> products = productRepository.findAllByUser(user);
+		return Product.convertToDTOs(products);
 	}
 
 	@GetMapping("/api/guest/product/{id}")

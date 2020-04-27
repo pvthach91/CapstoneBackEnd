@@ -1,6 +1,7 @@
 package com.pvthach.capstone.repository.product;
 
 import com.pvthach.capstone.model.Product;
+import com.pvthach.capstone.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long>, ProductCustomRepository {
 
     List<Product> findTop4By();
+
+    List<Product> findAllByUser(User user);
 }
