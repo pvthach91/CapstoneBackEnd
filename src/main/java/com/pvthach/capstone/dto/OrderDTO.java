@@ -27,6 +27,10 @@ public class OrderDTO implements Serializable {
 
     private String status;
 
+    private String shippingMethod;
+
+    private Integer shippingPrice;
+
     private List<OrderItemDTO> items;
 
 
@@ -112,5 +116,21 @@ public class OrderDTO implements Serializable {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(String shippingMethod) {
+        this.shippingMethod = shippingMethod;
+    }
+
+    public Integer getShippingPrice() {
+        return shippingPrice;
+    }
+
+    public void setShippingPrice(Integer shippingPrice) {
+        this.shippingPrice = shippingPrice;
     }
 }

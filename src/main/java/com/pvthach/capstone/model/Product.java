@@ -55,6 +55,15 @@ public class Product implements Serializable {
     @Column(name = "LONGITUDE", nullable = false)
     private Double longitude;
 
+    @Column(name = "QUANTITY", nullable = false)
+    private Integer quantity;
+
+    @Column(name = "STORE_LOCATION")
+    private Boolean storeLocation;
+
+    @Column(name = "LOCATION_REF")
+    private Long locationRef;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="USER_ID")
     private User user;
@@ -159,6 +168,30 @@ public class Product implements Serializable {
         this.user = user;
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Boolean getStoreLocation() {
+        return storeLocation;
+    }
+
+    public void setStoreLocation(Boolean storeLocation) {
+        this.storeLocation = storeLocation;
+    }
+
+    public Long getLocationRef() {
+        return locationRef;
+    }
+
+    public void setLocationRef(Long locationRef) {
+        this.locationRef = locationRef;
+    }
+
     public ProductDTO convertToDTO() {
         ProductDTO dto = new ProductDTO();
         dto.setId(id);
@@ -178,6 +211,9 @@ public class Product implements Serializable {
         dto.setLatitude(latitude);
         dto.setLongitude(longitude);
         dto.setUser(user.convertToDTO());
+        dto.setQuantity(quantity);
+        dto.setStoreLocation(storeLocation);
+        dto.setLocationRef(locationRef);
 
         return dto;
     }

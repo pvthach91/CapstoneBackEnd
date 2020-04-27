@@ -159,6 +159,8 @@ public class OrderController {
 		order.setLongitude(dto.getLongitude());
 		order.setTotalPrice(dto.getTotalPrice());
 		order.setStatus(OrderStaus.PROCESSING.name());
+		order.setShippingMethod(dto.getShippingMethod());
+		order.setShippingPrice(dto.getShippingPrice());
 		order.setItems(items);
 
 		Ordering savedOrder = orderRepository.save(order);

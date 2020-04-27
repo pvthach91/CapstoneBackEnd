@@ -17,6 +17,10 @@ public class OrderRequestDTO implements Serializable {
 
     private Integer totalPrice;
 
+    private String shippingMethod;
+
+    private Integer shippingPrice;
+
     private List<OrderItemRequestDTO> items;
 
     public OrderRequestDTO() {
@@ -60,5 +64,21 @@ public class OrderRequestDTO implements Serializable {
 
     public void setItems(List<OrderItemRequestDTO> items) {
         this.items = items;
+    }
+
+    public String getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(String shippingMethod) {
+        this.shippingMethod = shippingMethod;
+    }
+
+    public Integer getShippingPrice() {
+        return shippingPrice;
+    }
+
+    public void setShippingPrice(Integer shippingPrice) {
+        this.shippingPrice = shippingPrice;
     }
 }

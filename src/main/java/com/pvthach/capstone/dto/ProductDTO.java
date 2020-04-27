@@ -36,6 +36,12 @@ public class ProductDTO implements Serializable {
 
     private UserDTO user;
 
+    private Integer quantity;
+
+    private Boolean storeLocation;
+
+    private Long locationRef;
+
     public ProductDTO() {
     }
 
@@ -133,5 +139,29 @@ public class ProductDTO implements Serializable {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Boolean getStoreLocation() {
+        return storeLocation;
+    }
+
+    public void setStoreLocation(Boolean storeLocation) {
+        this.storeLocation = storeLocation;
+    }
+
+    public Long getLocationRef() {
+        return locationRef;
+    }
+
+    public void setLocationRef(Long locationRef) {
+        this.locationRef = locationRef;
     }
 }

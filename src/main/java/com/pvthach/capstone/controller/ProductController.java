@@ -43,7 +43,13 @@ public class ProductController {
 	UserRepository userRepository;
 
 	@GetMapping("/api/guest/products")
-	public Page<List<ProductDTO>> getDishes() {
+	public Page<List<ProductDTO>> getProducts() {
+		// Recommendation will be applied here
+		return productRepository.searchProducts(1, 1000);
+	}
+
+	@GetMapping("/api/products")
+	public Page<List<ProductDTO>> getProductsForFarmer() {
 		// Recommendation will be applied here
 		return productRepository.searchProducts(1, 1000);
 	}
@@ -80,7 +86,7 @@ public class ProductController {
 
 	@PostMapping("/api/product/add")
 	@PreAuthorize("hasRole('FARMER')")
-	public ProductDTO addProduct(@RequestBody ProductDTO dto) {
+	public ApiResponse<ProductDTO> addProduct(@RequestBody ProductDTO dto) {
 		Product product = new Product();
 
 		if (dto.getId() != null) {
@@ -102,8 +108,11 @@ public class ProductController {
 		product.setLatitude(dto.getLatitude());
 		product.setLongitude(dto.getLongitude());
 		product.setUser(user);
+		product.setQuantity(dto.getQuantity());
+		product.setStoreLocation(dto.getStoreLocation());
+		product.setLocationRef(dto.getLocationRef());
 		Product savedProduct = productRepository.save(product);
 
-		return savedProduct.convertToDTO();
+		return Response.successResult(savedProduct.convertToDTO());
 	}
 }

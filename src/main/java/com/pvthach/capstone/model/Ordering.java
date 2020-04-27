@@ -52,6 +52,12 @@ public class Ordering implements Serializable {
     @Column(name = "STATUS", nullable = false)
     private String status;
 
+    @Column(name = "SHIPPING_METHOD", nullable = false)
+    private String shippingMethod;
+
+    @Column(name = "SHIPPING_PRICE", nullable = false)
+    private Integer shippingPrice;
+
 
     @JsonIgnoreProperties("ordering")
     @OneToMany(mappedBy = "ordering", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -143,6 +149,22 @@ public class Ordering implements Serializable {
         this.longitude = longitude;
     }
 
+    public String getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(String shippingMethod) {
+        this.shippingMethod = shippingMethod;
+    }
+
+    public Integer getShippingPrice() {
+        return shippingPrice;
+    }
+
+    public void setShippingPrice(Integer shippingPrice) {
+        this.shippingPrice = shippingPrice;
+    }
+
     public OrderDTO convertToDTO () {
         OrderDTO dto = new OrderDTO();
         dto.setId(id);
@@ -154,6 +176,8 @@ public class Ordering implements Serializable {
         dto.setLongitude(longitude);
         dto.setTotalPrice(totalPrice);
         dto.setStatus(status);
+        dto.setShippingMethod(shippingMethod);
+        dto.setShippingPrice(shippingPrice);
         dto.setItems(OrderItem.convertToDTOs(items));
 
         return dto;
