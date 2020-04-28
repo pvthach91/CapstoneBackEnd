@@ -43,7 +43,7 @@ public class RateController {
 
 	@PostMapping("/api/rate/addRate/{productId}")
 	@PreAuthorize("hasRole('FARMER') or hasRole('BUYER')")
-	public Long addRate(@RequestBody RateDTO dto, @PathVariable Long productId) {
+	public List<RateDTO> addRate(@RequestBody RateDTO dto, @PathVariable Long productId) {
 		Rate rate = new Rate();
 
 		if (dto.getId() != null) {
@@ -61,6 +61,8 @@ public class RateController {
 		rate.setRatedBy(user);
 		rate.setProduct(product);
 		Rate savedRate = rateRepository.save(rate);
-		return savedRate.getId();
+
+		List<Rate> rates = rateRepository.findAllByProductOrderByDateCreatedDesc(product);
+		return Rate.convertToDTOs(rates);
 	}
 }

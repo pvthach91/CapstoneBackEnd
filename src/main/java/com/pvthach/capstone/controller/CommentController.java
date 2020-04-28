@@ -58,7 +58,7 @@ public class CommentController {
 
 	@PostMapping("/api/comment/addComment/{productId}")
 	@PreAuthorize("hasRole('FARMER') or hasRole('BUYER')")
-	public Long addComment(@RequestBody CommentDTO dto, @PathVariable Long productId) {
+	public List<CommentDTO> addComment(@RequestBody CommentDTO dto, @PathVariable Long productId) {
 		Comment comment = new Comment();
 
 		if (dto.getId() != null) {
@@ -76,7 +76,9 @@ public class CommentController {
 		comment.setCommentedBy(user);
 		comment.setProduct(product);
 		Comment savedComment = commentRepository.save(comment);
-		return savedComment.getId();
+
+		List<Comment> comments = commentRepository.findAllByProductOrderByDateCreatedDesc(product);
+		return Comment.convertToDTOs(comments);
 	}
 
 	@PostMapping("/api/comment/addSubComment/{commentId}")
