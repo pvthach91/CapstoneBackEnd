@@ -28,6 +28,9 @@ public class OrderItem implements Serializable {
     @Column(name = "QUANTITY", nullable = false)
     private Integer quantity;
 
+    @Column(name = "PRICE", nullable = false)
+    private Integer price;
+
     @JsonIgnoreProperties("orderitem")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="ORDER_ID")
@@ -68,10 +71,19 @@ public class OrderItem implements Serializable {
         this.ordering = ordering;
     }
 
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
     public OrderItemDTO convertToDTO() {
         OrderItemDTO dto = new OrderItemDTO();
         dto.setId(id);
         dto.setQuantity(quantity);
+        dto.setPrice(price);
         dto.setProduct(product.convertToDTO());
 
         return dto;

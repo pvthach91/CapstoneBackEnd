@@ -148,6 +148,7 @@ public class OrderController {
 			OrderItem orderItem = new OrderItem();
 			orderItem.setProduct(product);
 			orderItem.setQuantity(dtos.getQuantity());
+			orderItem.setPrice(product.getPromotionPrice());
 			orderItem.setOrdering(order);
 			items.add(orderItem);
 		}

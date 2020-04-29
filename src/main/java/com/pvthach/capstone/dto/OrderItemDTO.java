@@ -14,6 +14,8 @@ public class OrderItemDTO implements Serializable {
 
     private Integer quantity;
 
+    private Integer price;
+
     public OrderItemDTO() {
     }
 
@@ -39,5 +41,13 @@ public class OrderItemDTO implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }

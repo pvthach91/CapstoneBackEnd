@@ -112,7 +112,14 @@ public class ProductController {
 		product.setName(dto.getName());
 		product.setCategory(dto.getCategory());
 		product.setPrice(dto.getPrice());
-		product.setPromotionPrice(dto.getPromotionPrice());
+		if (dto.getPromotionActive()) {
+			if (dto.getPromotionPrice() >= dto.getPrice()) {
+				return Response.failedResult("Promotion proce must be less than normal price");
+			}
+			product.setPromotionPrice(dto.getPromotionPrice());
+		} else {
+			product.setPromotionPrice(dto.getPrice());
+		}
 		product.setPromotionActive(dto.getPromotionActive());
 		product.setDescription(dto.getDescription());
 		String img = String.join(";", dto.getImages());
