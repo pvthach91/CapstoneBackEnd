@@ -47,6 +47,9 @@ public class User implements Serializable {
     @Column(name = "ADDRESS")
     private String address;
 
+    @Column(name = "STATE")
+    private String state;
+
     @Column(name = "JOIN_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -199,6 +202,14 @@ public class User implements Serializable {
         this.messages = messages;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public boolean containRole(long role) {
         for (Role r: roles) {
             if (r.getId()== role) {
@@ -221,6 +232,7 @@ public class User implements Serializable {
         dto.setLatitude(latitude);
         dto.setLongitude(longitude);
         dto.setActive(isActive);
+        dto.setState(state);
         dto.setRoles(roles);
 //        String[] msgArray = messages.split(";");
 //        List<String> msgList = new ArrayList<String>();

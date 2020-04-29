@@ -18,6 +18,8 @@ public class FarmDTO implements Serializable {
 
     private Double longitude;
 
+    private String state;
+
     public FarmDTO() {
     }
 
@@ -59,5 +61,13 @@ public class FarmDTO implements Serializable {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

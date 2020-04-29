@@ -26,6 +26,8 @@ public class SignUpForm {
 
     private Integer role;
 
+    private String state;
+
     public String getName() {
         return name;
     }
@@ -104,5 +106,13 @@ public class SignUpForm {
 
     public void setRole(Integer role) {
         this.role = role;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

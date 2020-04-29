@@ -121,6 +121,7 @@ public class FarmerController {
 		farm.setImages(img);
 		farm.setLatitude(dto.getLatitude());
 		farm.setLongitude(dto.getLongitude());
+		farm.setState(dto.getState());
 		farm.setUser(user);
 		Farm savedFarm = farmRepository.save(farm);
 		return savedFarm.getId();

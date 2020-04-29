@@ -91,6 +91,7 @@ public class UserController {
 		savedUser.setAddress(dto.getAddress());
 		savedUser.setLatitude(dto.getLatitude());
 		savedUser.setLongitude(dto.getLongitude());
+		savedUser.setState(dto.getState());
 		User u = userRepository.save(savedUser);
 
 		return u.convertToDTO();

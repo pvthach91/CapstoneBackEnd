@@ -23,6 +23,9 @@ public class Farm implements Serializable {
     @Column(name = "ADDRESS")
     private String address;
 
+    @Column(name = "STATE")
+    private String state;
+
     @Column(name = "IMAGES")
     private String images;
 
@@ -87,6 +90,14 @@ public class Farm implements Serializable {
         this.user = user;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public FarmDTO convertToDTO() {
         FarmDTO dto = new FarmDTO();
         dto.setId(id);
@@ -99,6 +110,7 @@ public class Farm implements Serializable {
         dto.setImages(imgList);
         dto.setLatitude(latitude);
         dto.setLongitude(longitude);
+        dto.setState(state);
 
         return dto;
     }

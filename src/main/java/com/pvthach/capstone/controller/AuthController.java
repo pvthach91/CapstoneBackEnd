@@ -134,6 +134,7 @@ public class AuthController {
 		user.setPhoto(signUpRequest.getPhoto());
 		user.setLatitude(signUpRequest.getLatitude());
 		user.setLongitude(signUpRequest.getLongitude());
+		user.setState(signUpRequest.getState());
 
 		Set<Role> roles = new HashSet<>();
 

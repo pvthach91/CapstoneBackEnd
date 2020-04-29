@@ -42,6 +42,8 @@ public class UserDTO implements Serializable {
 
     private List<String> messages;
 
+    private String state;
+
     public UserDTO() {}
 
     public Long getId() {
@@ -146,5 +148,13 @@ public class UserDTO implements Serializable {
 
     public void setMessages(List<String> messages) {
         this.messages = messages;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
