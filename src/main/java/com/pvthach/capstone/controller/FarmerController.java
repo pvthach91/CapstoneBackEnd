@@ -105,7 +105,7 @@ public class FarmerController {
 
 	@PostMapping("/api/farmer/addFarm")
 	@PreAuthorize("hasRole('FARMER')")
-	public Long addFarm(@RequestBody FarmDTO dto) {
+	public ApiResponse<FarmDTO> addFarm(@RequestBody FarmDTO dto) {
 		Farm farm = new Farm();
 
 		if (dto.getId() != null) {
@@ -124,7 +124,8 @@ public class FarmerController {
 		farm.setState(dto.getState());
 		farm.setUser(user);
 		Farm savedFarm = farmRepository.save(farm);
-		return savedFarm.getId();
+		FarmDTO savedDTO = savedFarm.convertToDTO();
+		return Response.successResult(savedDTO);
 	}
 
 	@PostMapping("/api/farmer/changeFarmPhoto")
