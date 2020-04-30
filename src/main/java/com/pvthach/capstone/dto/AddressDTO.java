@@ -17,6 +17,8 @@ public class AddressDTO implements Serializable {
 
     private String state;
 
+    private String name;
+
     public AddressDTO() {
     }
 
@@ -58,5 +60,13 @@ public class AddressDTO implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -82,6 +82,7 @@ public class AddressController {
 		address.setLatitude(dto.getLatitude());
 		address.setLongitude(dto.getLongitude());
 		address.setState(dto.getState());
+		address.setName(dto.getName());
 		address.setUser(user);
 		Address savedFarm = addressRepository.save(address);
 		AddressDTO savedDTO = savedFarm.convertToDTO();

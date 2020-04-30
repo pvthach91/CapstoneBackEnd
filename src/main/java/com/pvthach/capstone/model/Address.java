@@ -20,6 +20,9 @@ public class Address implements Serializable {
     @Column(name = "ID")
     private Long id;
 
+    @Column(name = "NAME")
+    private String name;
+
     @Column(name = "ADDRESS")
     private String address;
 
@@ -87,6 +90,14 @@ public class Address implements Serializable {
         this.state = state;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public AddressDTO convertToDTO() {
         AddressDTO dto = new AddressDTO();
         dto.setId(id);
@@ -94,6 +105,7 @@ public class Address implements Serializable {
         dto.setLatitude(latitude);
         dto.setLongitude(longitude);
         dto.setState(state);
+        dto.setName(name);
 
         return dto;
     }
