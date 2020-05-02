@@ -2,26 +2,23 @@ package com.pvthach.capstone.controller;
 
 import com.pvthach.capstone.dto.ProductDTO;
 import com.pvthach.capstone.dto.ProductSearchCriteria;
+import com.pvthach.capstone.dto.VehicleDTO;
 import com.pvthach.capstone.dto.response.ProductDetailDTO;
 import com.pvthach.capstone.message.response.ApiResponse;
 import com.pvthach.capstone.message.response.Response;
-import com.pvthach.capstone.model.Comment;
-import com.pvthach.capstone.model.Product;
-import com.pvthach.capstone.model.Rate;
-import com.pvthach.capstone.model.User;
+import com.pvthach.capstone.model.*;
 import com.pvthach.capstone.repository.CommentRepository;
 import com.pvthach.capstone.repository.RateRepository;
+import com.pvthach.capstone.repository.VehicleRepository;
 import com.pvthach.capstone.repository.product.ProductRepository;
 import com.pvthach.capstone.repository.user.UserRepository;
-import com.pvthach.capstone.service.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by THACH-PC
@@ -43,14 +40,38 @@ public class ProductController {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	VehicleRepository vehicleRepository;
+
 	@PostMapping("/api/guest/products")
 	public List<ProductDTO> getProducts(@RequestBody ProductSearchCriteria criteriaSearch) {
 		List<Product> products = productRepository.searchProducts(criteriaSearch);
+		List<ProductDTO> result = new ArrayList<ProductDTO>();
+
+		// Set vehicles
+		List<Vehicle> vehicles = vehicleRepository.findAll();
+		Map<Long, List<VehicleDTO>> vehicleMap = new HashMap<Long, List<VehicleDTO>>();
+		for (Vehicle v: vehicles) {
+			if (vehicleMap.containsKey(v.getUser().getId())) {
+				vehicleMap.get(v.getUser().getId()).add(v.convertToDTO());
+			} else {
+				List<VehicleDTO> list = new ArrayList<VehicleDTO>();
+				list.add(v.convertToDTO());
+				vehicleMap.put(v.getUser().getId(), list);
+			}
+		}
+		for (Product p : products) {
+			ProductDTO dto = p.convertToDTO();
+			List<VehicleDTO> list = vehicleMap.get(dto.getUser().getId());
+			dto.getUser().setVehicles(list);
+
+			result.add(dto);
+		}
 
 		// Recommendation will be applied here
 
 		//sort, state
-		List<ProductDTO> result = Product.convertToDTOs(products);
+//			List<ProductDTO> result = Product.convertToDTOs(products);
 		return result;
 	}
 
@@ -73,6 +94,8 @@ public class ProductController {
 			return Response.failedResult("Failed to get product");
 		}
 		Product product = productDetail.get();
+		List<Vehicle> vehicles = vehicleRepository.findAllByUser(product.getUser());
+
 		// Recommendation will be applied here
 		List<Product> recommendations = productRepository.findTop4By();
 
@@ -82,6 +105,7 @@ public class ProductController {
 
 		ProductDetailDTO detail = new ProductDetailDTO();
 		detail.setDto(product.convertToDTO());
+		detail.getDto().getUser().setVehicles(Vehicle.convertToDTOs(vehicles));
 		detail.setRecommendations(Product.convertToDTOs(recommendations));
 		detail.setComments(Comment.convertToDTOs(commments));
 		detail.setRates(Rate.convertToDTOs(rates));

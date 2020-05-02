@@ -44,6 +44,8 @@ public class UserDTO implements Serializable {
 
     private String state;
 
+    private List<VehicleDTO> vehicles;
+
     public UserDTO() {}
 
     public Long getId() {
@@ -156,5 +158,13 @@ public class UserDTO implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public List<VehicleDTO> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(List<VehicleDTO> vehicles) {
+        this.vehicles = vehicles;
     }
 }

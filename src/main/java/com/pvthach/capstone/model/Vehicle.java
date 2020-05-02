@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by THACH-PC
@@ -104,5 +105,13 @@ public class Vehicle implements Serializable {
             dtos.add(v.convertToDTO());
         }
         return dtos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return id.longValue() == vehicle.id.longValue();
     }
 }
