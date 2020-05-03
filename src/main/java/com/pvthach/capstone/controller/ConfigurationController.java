@@ -78,6 +78,9 @@ public class ConfigurationController {
 			}
 		}
 
+		// Current user
+		dto.setUser(user.convertToDTO());
+
 
 		return dto;
 	}

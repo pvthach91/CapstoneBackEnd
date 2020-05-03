@@ -63,6 +63,12 @@ public class ProductController {
 		for (Product p : products) {
 			ProductDTO dto = p.convertToDTO();
 			List<VehicleDTO> list = vehicleMap.get(dto.getUser().getId());
+			Collections.sort(list, new Comparator<VehicleDTO>() {
+				@Override
+				public int compare(VehicleDTO o1, VehicleDTO o2) {
+					return o1.getWeightCarry().compareTo(o2.getWeightCarry());
+				}
+			});
 			dto.getUser().setVehicles(list);
 
 			result.add(dto);
@@ -105,7 +111,14 @@ public class ProductController {
 
 		ProductDetailDTO detail = new ProductDetailDTO();
 		detail.setDto(product.convertToDTO());
-		detail.getDto().getUser().setVehicles(Vehicle.convertToDTOs(vehicles));
+		List<VehicleDTO> vehicleDTOS = Vehicle.convertToDTOs(vehicles);
+		Collections.sort(vehicleDTOS, new Comparator<VehicleDTO>() {
+			@Override
+			public int compare(VehicleDTO o1, VehicleDTO o2) {
+				return o1.getWeightCarry().compareTo(o2.getWeightCarry());
+			}
+		});
+		detail.getDto().getUser().setVehicles(vehicleDTOS);
 		detail.setRecommendations(Product.convertToDTOs(recommendations));
 		detail.setComments(Comment.convertToDTOs(commments));
 		detail.setRates(Rate.convertToDTOs(rates));

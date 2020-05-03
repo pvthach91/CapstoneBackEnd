@@ -1,7 +1,6 @@
 package com.pvthach.capstone.dto;
 
 
-import com.pvthach.capstone.model.Address;
 import com.pvthach.capstone.model.State;
 
 import java.io.Serializable;
@@ -18,6 +17,8 @@ public class ConfigurationDTO implements Serializable {
     private List<ShippingConfigDTO> shippingConfigs;
 
     private List<AddressDTO> deliveryAddresses;
+
+    private UserDTO user;
 
 
     public ConfigurationDTO() {
@@ -45,5 +46,13 @@ public class ConfigurationDTO implements Serializable {
 
     public void setDeliveryAddresses(List<AddressDTO> deliveryAddresses) {
         this.deliveryAddresses = deliveryAddresses;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }
