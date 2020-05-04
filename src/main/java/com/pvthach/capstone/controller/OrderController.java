@@ -1,5 +1,6 @@
 package com.pvthach.capstone.controller;
 
+import com.pvthach.capstone.dto.AddressDTO;
 import com.pvthach.capstone.dto.OrderDTO;
 import com.pvthach.capstone.dto.OrderSearchCriteria;
 import com.pvthach.capstone.dto.request.OrderItemRequestDTO;
@@ -14,6 +15,7 @@ import com.pvthach.capstone.service.MailService;
 import com.pvthach.capstone.service.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +49,21 @@ public class OrderController {
 	@PostMapping("/api/orders")
 	@PreAuthorize("hasRole('FARMER') or hasRole('BUYER') or hasRole('PM')")
 	public Page<List<OrderDTO>> getOrders(@RequestBody OrderSearchCriteria searchCriteria) {
+
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found"));
+		if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+			List<GrantedAuthority> au = (List<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+			String role = au.get(0).getAuthority();
+			if (RoleName.ROLE_BUYER.name().equals(role)) {
+				searchCriteria.setOrderBy(username);
+			} else if (RoleName.ROLE_FARMER.name().equals(role)) {
+				searchCriteria.setFarmer(username);
+			} else if (RoleName.ROLE_PM.name().equals(role)) {
+				// Get all
+			}
+		}
 		return orderRepository.searchOrders(searchCriteria);
 	}
 

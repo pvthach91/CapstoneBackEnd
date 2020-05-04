@@ -2,16 +2,16 @@ package com.pvthach.capstone.repository.order;
 
 import com.pvthach.capstone.dto.OrderDTO;
 import com.pvthach.capstone.dto.OrderSearchCriteria;
+import com.pvthach.capstone.model.OrderItem;
 import com.pvthach.capstone.model.Ordering;
+import com.pvthach.capstone.model.Product;
+import com.pvthach.capstone.model.User;
 import com.pvthach.capstone.service.Page;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +31,17 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
         CriteriaQuery<Ordering> criteria = builder.createQuery(Ordering.class);
         Root<Ordering> root = criteria.from(Ordering.class);
 
+        Join<Ordering, User> user = root.join("orderBy");
+
+        String farmerName = criteriaSearch.getFarmer();
+        Join<Product, User> farmer = null;
+        if (farmerName != null && farmerName.length()> 0) {
+            Join<Ordering, OrderItem> items = root.join("items");
+            Join<OrderItem, Product> product = items.join("product");
+            farmer = product.join("user");
+            criteria.distinct(true);
+        }
+
         List<Predicate> conditions =  new ArrayList<Predicate>();
 
         String orderId = criteriaSearch.getOrderId();
@@ -41,6 +52,15 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
         String status = criteriaSearch.getStatus();
         if (status != null && status.length() > 0) {
             conditions.add(builder.equal(root.get("status"), status));
+        }
+
+        String orderBy = criteriaSearch.getOrderBy();
+        if (orderBy != null && orderBy.length() > 0) {
+            conditions.add(builder.equal(user.get("username"), orderBy));
+        }
+
+        if (farmerName != null && farmerName.length()> 0) {
+            conditions.add(builder.equal(farmer.get("username"), farmerName));
         }
 
         Predicate[] cons = conditions.toArray(new Predicate[conditions.size()]);
@@ -82,6 +102,17 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<Ordering> root = criteria.from(Ordering.class);
 
+        Join<Ordering, User> user = root.join("orderBy");
+
+        String farmerName = criteriaSearch.getFarmer();
+        Join<Product, User> farmer = null;
+        if (farmerName != null && farmerName.length()> 0) {
+            Join<Ordering, OrderItem> items = root.join("items");
+            Join<OrderItem, Product> product = items.join("product");
+            farmer = product.join("user");
+            criteria.distinct(true);
+        }
+
         List<Predicate> conditions =  new ArrayList<Predicate>();
 
         String orderId = criteriaSearch.getOrderId();
@@ -92,6 +123,15 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
         String status = criteriaSearch.getStatus();
         if (status != null && status.length() > 0) {
             conditions.add(builder.equal(root.get("status"), status));
+        }
+
+        String orderBy = criteriaSearch.getOrderBy();
+        if (orderBy != null && orderBy.length() > 0) {
+            conditions.add(builder.equal(user.get("username"), orderBy));
+        }
+
+        if (farmerName != null && farmerName.length()> 0) {
+            conditions.add(builder.equal(farmer.get("username"), farmerName));
         }
 
         Predicate[] cons = conditions.toArray(new Predicate[conditions.size()]);

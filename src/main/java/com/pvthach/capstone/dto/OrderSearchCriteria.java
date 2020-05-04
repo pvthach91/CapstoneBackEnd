@@ -17,6 +17,10 @@ public class OrderSearchCriteria implements Serializable {
 
     private Integer pageSize;
 
+    private String orderBy;
+
+    private String farmer;
+
 
     public OrderSearchCriteria() {
     }
@@ -51,5 +55,21 @@ public class OrderSearchCriteria implements Serializable {
 
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public String getFarmer() {
+        return farmer;
+    }
+
+    public void setFarmer(String farmer) {
+        this.farmer = farmer;
     }
 }
