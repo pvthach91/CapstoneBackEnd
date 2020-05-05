@@ -2,6 +2,7 @@ package com.pvthach.capstone.dto;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by THACH-PC
@@ -11,7 +12,7 @@ public class ProductSearchCriteria implements Serializable {
 
     private String name;
 
-    private String category;
+    private List<String> category;
 
     private String state;
 
@@ -35,11 +36,11 @@ public class ProductSearchCriteria implements Serializable {
         this.name = name;
     }
 
-    public String getCategory() {
+    public List<String> getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(List<String> category) {
         this.category = category;
     }
 

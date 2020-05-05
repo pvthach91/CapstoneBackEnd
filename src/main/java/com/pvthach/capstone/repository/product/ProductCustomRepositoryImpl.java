@@ -72,9 +72,9 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
             conditions.add(builder.equal(root.get("name"), name));
         }
 
-        String category = criteriaSearch.getCategory();
-        if (category != null && category.length() > 0) {
-            conditions.add(builder.equal(root.get("category"), category));
+        List<String> category = criteriaSearch.getCategory();
+        if (category != null && category.size() > 0) {
+            conditions.add(root.get("category").in(category));
         }
 
         Boolean promotionActive = criteriaSearch.getPromotionActive();
