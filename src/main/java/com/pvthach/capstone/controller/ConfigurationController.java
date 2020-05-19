@@ -4,7 +4,7 @@ import com.pvthach.capstone.dto.AddressDTO;
 import com.pvthach.capstone.dto.ConfigurationDTO;
 import com.pvthach.capstone.model.*;
 import com.pvthach.capstone.repository.AddressRepository;
-import com.pvthach.capstone.repository.ShippingConfigRepository;
+import com.pvthach.capstone.repository.shippingConfig.ShippingConfigRepository;
 import com.pvthach.capstone.repository.StateRepository;
 import com.pvthach.capstone.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

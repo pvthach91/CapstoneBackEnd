@@ -1,10 +1,12 @@
 package com.pvthach.capstone.controller;
 
 import com.pvthach.capstone.dto.ShippingConfigDTO;
+import com.pvthach.capstone.dto.ShippingConfigSearchCriteria;
 import com.pvthach.capstone.message.response.ApiResponse;
 import com.pvthach.capstone.message.response.Response;
 import com.pvthach.capstone.model.ShippingConfig;
-import com.pvthach.capstone.repository.ShippingConfigRepository;
+import com.pvthach.capstone.repository.shippingConfig.ShippingConfigRepository;
+import com.pvthach.capstone.service.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,12 +26,11 @@ public class ShippingConfigController {
 	ShippingConfigRepository shippingConfigRepository;
 
 
-	@GetMapping("/api/shippingConfigs")
+	@PostMapping("/api/shippingConfigs")
 	@PreAuthorize("hasRole('FARMER') || hasRole('BUYER') || hasRole('PM')")
-	public List<ShippingConfigDTO> getShippingConfigs() {
+	public Page<List<ShippingConfigDTO>> getShippingConfigs(@RequestBody ShippingConfigSearchCriteria searchCriteria) {
 
-		List<ShippingConfig> cofigs = shippingConfigRepository.findAll();
-		return ShippingConfig.convertToDTOs(cofigs);
+		return shippingConfigRepository.searchShippingConfigs(searchCriteria);
 	}
 
 	@GetMapping("/api/shippingConfig/{id}")

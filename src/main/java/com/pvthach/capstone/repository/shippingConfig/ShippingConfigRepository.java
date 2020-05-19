@@ -1,4 +1,4 @@
-package com.pvthach.capstone.repository;
+package com.pvthach.capstone.repository.shippingConfig;
 
 import com.pvthach.capstone.model.ShippingConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface ShippingConfigRepository extends JpaRepository<ShippingConfig, Long> {
+public interface ShippingConfigRepository extends JpaRepository<ShippingConfig, Long>, ShippingConfigCustomRepository {
 }
