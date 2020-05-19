@@ -14,6 +14,7 @@ import com.pvthach.capstone.repository.product.ProductRepository;
 import com.pvthach.capstone.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -81,15 +82,38 @@ public class ProductController {
 		return result;
 	}
 
-	@GetMapping("/api/products")
-	public List<ProductDTO> getProductsForFarmer() {
+	@PostMapping("/api/products")
+	public List<ProductDTO> getProductsForUser(@RequestBody ProductSearchCriteria criteriaSearch) {
+		List<Product> products = new ArrayList<Product>();
 
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException("User not found"));
+
+		String status = criteriaSearch.getStatus();
+
+		if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+			List<GrantedAuthority> au = (List<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+			String role = au.get(0).getAuthority();
+			if (RoleName.ROLE_BUYER.name().equals(role)) {
+				Response.failedResult("Buyer is not allowed to use this function");
+			} else if (RoleName.ROLE_FARMER.name().equals(role)) {
+				if (status == null || status.length() == 0) {
+					products = productRepository.findAllByUser(user);
+				} else {
+					products = productRepository.findAllByUserAndStatus(user, status);
+				}
+			} else if (RoleName.ROLE_PM.name().equals(role)) {
+				if (status == null || status.length() == 0) {
+					products = productRepository.findAll();
+				} else {
+					products = productRepository.findAllByStatus(status);
+				}
+			}
+		}
+
 		// Recommendation will be applied here
 
-		List<Product> products = productRepository.findAllByUser(user);
 		return Product.convertToDTOs(products);
 	}
 
@@ -167,6 +191,19 @@ public class ProductController {
 		product.setQuantity(dto.getQuantity());
 		product.setStoreLocation(dto.getStoreLocation());
 		product.setLocationRef(dto.getLocationRef());
+		product.setStatus(ProductStatus.PENDING.name());
+		Product savedProduct = productRepository.save(product);
+
+		return Response.successResult(savedProduct.convertToDTO());
+	}
+
+	@PostMapping("/api/product/approve/{id}")
+	@PreAuthorize("hasRole('PM')")
+	public ApiResponse<ProductDTO> approve(@PathVariable Long id) {
+		Product product = productRepository.findById(id).orElseThrow(
+				() -> new UsernameNotFoundException("Product is invalid"));
+
+		product.setStatus(ProductStatus.APPROVED.name());
 		Product savedProduct = productRepository.save(product);
 
 		return Response.successResult(savedProduct.convertToDTO());

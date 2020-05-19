@@ -12,6 +12,8 @@ public class ProductSearchCriteria implements Serializable {
 
     private String name;
 
+    private String status;
+
     private List<String> category;
 
     private String state;
@@ -82,5 +84,13 @@ public class ProductSearchCriteria implements Serializable {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

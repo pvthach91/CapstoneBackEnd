@@ -3,6 +3,7 @@ package com.pvthach.capstone.repository.product;
 import com.pvthach.capstone.dto.ProductDTO;
 import com.pvthach.capstone.dto.ProductSearchCriteria;
 import com.pvthach.capstone.model.Product;
+import com.pvthach.capstone.model.ProductStatus;
 import com.pvthach.capstone.service.Page;
 import org.springframework.stereotype.Repository;
 
@@ -66,6 +67,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
 
 
         List<Predicate> conditions =  new ArrayList<Predicate>();
+
+        conditions.add(builder.equal(root.get("status"), ProductStatus.APPROVED.name()));
 
         String name = criteriaSearch.getName();
         if (name != null && name.length() > 0) {

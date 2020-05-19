@@ -68,6 +68,9 @@ public class Product implements Serializable {
     @JoinColumn(name="USER_ID")
     private User user;
 
+    @Column(name = "STATUS")
+    private String status;
+
     public Product() {
         this.dateCreated = new Date();
     }
@@ -192,6 +195,14 @@ public class Product implements Serializable {
         this.locationRef = locationRef;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public ProductDTO convertToDTO() {
         ProductDTO dto = new ProductDTO();
         dto.setId(id);
@@ -214,6 +225,7 @@ public class Product implements Serializable {
         dto.setQuantity(quantity);
         dto.setStoreLocation(storeLocation);
         dto.setLocationRef(locationRef);
+        dto.setStatus(status);
 
         return dto;
     }

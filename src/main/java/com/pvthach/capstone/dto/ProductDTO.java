@@ -42,6 +42,8 @@ public class ProductDTO implements Serializable {
 
     private Long locationRef;
 
+    private String status;
+
     public ProductDTO() {
     }
 
@@ -163,5 +165,13 @@ public class ProductDTO implements Serializable {
 
     public void setLocationRef(Long locationRef) {
         this.locationRef = locationRef;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

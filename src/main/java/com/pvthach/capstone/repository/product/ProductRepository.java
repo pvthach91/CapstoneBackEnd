@@ -17,4 +17,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     List<Product> findTop4By();
 
     List<Product> findAllByUser(User user);
+
+    List<Product> findAllByStatus(String status);
+
+    List<Product> findAllByUserAndStatus(User user, String status);
 }
