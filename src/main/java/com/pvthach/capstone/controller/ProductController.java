@@ -47,38 +47,38 @@ public class ProductController {
 	@PostMapping("/api/guest/products")
 	public List<ProductDTO> getProducts(@RequestBody ProductSearchCriteria criteriaSearch) {
 		List<Product> products = productRepository.searchProducts(criteriaSearch);
-		List<ProductDTO> result = new ArrayList<ProductDTO>();
+//		List<ProductDTO> result = new ArrayList<ProductDTO>();
 
 		// Set vehicles
-		List<Vehicle> vehicles = vehicleRepository.findAll();
-		Map<Long, List<VehicleDTO>> vehicleMap = new HashMap<Long, List<VehicleDTO>>();
-		for (Vehicle v: vehicles) {
-			if (vehicleMap.containsKey(v.getUser().getId())) {
-				vehicleMap.get(v.getUser().getId()).add(v.convertToDTO());
-			} else {
-				List<VehicleDTO> list = new ArrayList<VehicleDTO>();
-				list.add(v.convertToDTO());
-				vehicleMap.put(v.getUser().getId(), list);
-			}
-		}
-		for (Product p : products) {
-			ProductDTO dto = p.convertToDTO();
-			List<VehicleDTO> list = vehicleMap.get(dto.getUser().getId());
-			Collections.sort(list, new Comparator<VehicleDTO>() {
-				@Override
-				public int compare(VehicleDTO o1, VehicleDTO o2) {
-					return o1.getWeightCarry().compareTo(o2.getWeightCarry());
-				}
-			});
-			dto.getUser().setVehicles(list);
-
-			result.add(dto);
-		}
+//		List<Vehicle> vehicles = vehicleRepository.findAll();
+//		Map<Long, List<VehicleDTO>> vehicleMap = new HashMap<Long, List<VehicleDTO>>();
+//		for (Vehicle v: vehicles) {
+//			if (vehicleMap.containsKey(v.getUser().getId())) {
+//				vehicleMap.get(v.getUser().getId()).add(v.convertToDTO());
+//			} else {
+//				List<VehicleDTO> list = new ArrayList<VehicleDTO>();
+//				list.add(v.convertToDTO());
+//				vehicleMap.put(v.getUser().getId(), list);
+//			}
+//		}
+//		for (Product p : products) {
+//			ProductDTO dto = p.convertToDTO();
+//			List<VehicleDTO> list = vehicleMap.get(dto.getUser().getId());
+//			Collections.sort(list, new Comparator<VehicleDTO>() {
+//				@Override
+//				public int compare(VehicleDTO o1, VehicleDTO o2) {
+//					return o1.getWeightCarry().compareTo(o2.getWeightCarry());
+//				}
+//			});
+//			dto.getUser().setVehicles(list);
+//
+//			result.add(dto);
+//		}
 
 		// Recommendation will be applied here
 
 		//sort, state
-//			List<ProductDTO> result = Product.convertToDTOs(products);
+			List<ProductDTO> result = Product.convertToDTOs(products);
 		return result;
 	}
 
