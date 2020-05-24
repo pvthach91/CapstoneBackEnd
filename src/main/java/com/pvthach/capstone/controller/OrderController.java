@@ -116,6 +116,16 @@ public class OrderController {
 		Ordering order = orderRepository.findById(orderId).orElseThrow(
 				() -> new UsernameNotFoundException("Order is invalid"));
 
+		for (OrderItem item : order.getItems()) {
+//			Product product = productRepository.findById(item.getProduct().getId()).orElseThrow(
+//					() -> new UsernameNotFoundException("Product not found"));
+
+			Product product = item.getProduct();
+
+			product.setTotalOrder(product.getQuantity() - item.getQuantity());
+			productRepository.save(product);
+		}
+
 		order.setStatus(OrderStaus.CANCELLED.name());
 		Ordering saved = orderRepository.save(order);
 		OrderDTO dto = saved.convertToDTO();
@@ -168,6 +178,9 @@ public class OrderController {
 			orderItem.setPrice(product.getPromotionPrice());
 			orderItem.setOrdering(order);
 			items.add(orderItem);
+
+			product.setTotalOrder(product.getQuantity() + dtos.getQuantity());
+			productRepository.save(product);
 		}
 
 

@@ -44,6 +44,8 @@ public class ProductDTO implements Serializable {
 
     private String status;
 
+    private Integer totalOrder;
+
     public ProductDTO() {
     }
 
@@ -173,5 +175,13 @@ public class ProductDTO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getTotalOrder() {
+        return totalOrder;
+    }
+
+    public void setTotalOrder(Integer totalOrder) {
+        this.totalOrder = totalOrder;
     }
 }

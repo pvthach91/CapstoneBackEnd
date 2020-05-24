@@ -192,6 +192,7 @@ public class ProductController {
 		product.setStoreLocation(dto.getStoreLocation());
 		product.setLocationRef(dto.getLocationRef());
 		product.setStatus(ProductStatus.PENDING.name());
+		product.setTotalOrder(0);
 		Product savedProduct = productRepository.save(product);
 
 		return Response.successResult(savedProduct.convertToDTO());

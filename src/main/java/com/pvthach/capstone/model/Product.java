@@ -71,6 +71,9 @@ public class Product implements Serializable {
     @Column(name = "STATUS")
     private String status;
 
+    @Column(name = "TOTAL_ORDER", nullable = false)
+    private Integer totalOrder;
+
     public Product() {
         this.dateCreated = new Date();
     }
@@ -203,6 +206,14 @@ public class Product implements Serializable {
         this.status = status;
     }
 
+    public Integer getTotalOrder() {
+        return totalOrder;
+    }
+
+    public void setTotalOrder(Integer totalOrder) {
+        this.totalOrder = totalOrder;
+    }
+
     public ProductDTO convertToDTO() {
         ProductDTO dto = new ProductDTO();
         dto.setId(id);
@@ -226,6 +237,7 @@ public class Product implements Serializable {
         dto.setStoreLocation(storeLocation);
         dto.setLocationRef(locationRef);
         dto.setStatus(status);
+        dto.setTotalOrder(totalOrder==null? 0 :totalOrder);
 
         return dto;
     }
