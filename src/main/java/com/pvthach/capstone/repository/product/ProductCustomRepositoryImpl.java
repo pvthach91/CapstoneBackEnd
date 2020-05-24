@@ -72,7 +72,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
 
         String name = criteriaSearch.getName();
         if (name != null && name.length() > 0) {
-            conditions.add(builder.equal(root.get("name"), name));
+            conditions.add(builder.like(root.get("name"), "%" + name + "%"));
         }
 
         List<String> category = criteriaSearch.getCategory();
