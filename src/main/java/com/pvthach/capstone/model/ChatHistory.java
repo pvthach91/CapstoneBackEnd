@@ -13,8 +13,8 @@ import java.util.List;
  * Created by THACH-PC
  */
 
-@Table(name = "CHAT")
-@Entity(name = "Chat")
+@Table(name = "CHATHISTORY")
+@Entity(name = "ChatHistory")
 public class ChatHistory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

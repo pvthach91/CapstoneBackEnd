@@ -77,7 +77,7 @@ public class ChatController {
 		return result;
 	}
 
-	@PostMapping("/api/chat/addChat}")
+	@PostMapping("/api/chat/addChat")
 	@PreAuthorize("hasRole('FARMER') or hasRole('BUYER')")
 	public Long addChat(@RequestBody ChatRequestDTO dto) {
 		Chat chat = new Chat();
