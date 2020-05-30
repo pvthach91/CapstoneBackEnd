@@ -1,4 +1,4 @@
-package com.pvthach.capstone.repository;
+package com.pvthach.capstone.repository.chat;
 
 import com.pvthach.capstone.model.ChatHistory;
 import com.pvthach.capstone.model.User;
@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ChatHistoryRepository extends JpaRepository<ChatHistory, Long> {
 
-    List<ChatHistory> findAllByFromUserOrToUser(User fromUser, User toUSer);
+    List<ChatHistory> findAllByFromUserOrToUserOrderByLastUpdatedDesc(User fromUser, User toUSer);
 
     List<ChatHistory> findAllByFromUserAndToUser(User fromUser, User toUSer);
 

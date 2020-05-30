@@ -1,4 +1,4 @@
-package com.pvthach.capstone.repository;
+package com.pvthach.capstone.repository.chat;
 
 import com.pvthach.capstone.model.Chat;
 import com.pvthach.capstone.model.User;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @Repository
-public interface ChatRepository extends JpaRepository<Chat, Long> {
+public interface ChatRepository extends JpaRepository<Chat, Long>, ChatCustomRepository {
 
     List<Chat> findAllByFromUserOrToUserOrderByDateCreatedDesc(User from, User to);
 

@@ -1,21 +1,25 @@
 package com.pvthach.capstone.controller;
 
 import com.pvthach.capstone.dto.ChatDTO;
+import com.pvthach.capstone.dto.ContactChatDTO;
 import com.pvthach.capstone.dto.UserDTO;
 import com.pvthach.capstone.dto.request.ChatRequestDTO;
 import com.pvthach.capstone.model.Chat;
 import com.pvthach.capstone.model.ChatHistory;
 import com.pvthach.capstone.model.User;
-import com.pvthach.capstone.repository.ChatHistoryRepository;
-import com.pvthach.capstone.repository.ChatRepository;
+import com.pvthach.capstone.repository.chat.ChatHistoryRepository;
+import com.pvthach.capstone.repository.chat.ChatRepository;
 import com.pvthach.capstone.repository.user.UserRepository;
+import com.pvthach.capstone.ultil.DateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -46,35 +50,44 @@ public class ChatController {
 		User toUser = userRepository.findById(id).orElseThrow(
 				() -> new UsernameNotFoundException("User not found"));
 
-		List<Chat> chats = chatRepository.findTop100ByFromUserAndToUserOrderByDateCreatedDesc(fromUser, toUser);
-		return Chat.convertToDTOs(chats);
+		List<ChatDTO> chats = chatRepository.getChats(fromUser.getUsername(), toUser.getUsername());
+		Collections.reverse(chats);
+		return chats;
 	}
 
 	@GetMapping("/api/chats")
 	@PreAuthorize("hasRole('FARMER') or hasRole('BUYER')")
-	public List<UserDTO> getChatContact() {
+	public List<ContactChatDTO> getChatContact() {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException("User not found"));
 
-		List<ChatHistory> chats = chatHistoryRepository.findAllByFromUserOrToUser(user, user);
+		List<ChatHistory> chats = chatHistoryRepository.findAllByFromUserOrToUserOrderByLastUpdatedDesc(user, user);
 		List<User> contacts = new ArrayList<User>();
+		List<ContactChatDTO> contactChats = new ArrayList<ContactChatDTO>();
 		for (ChatHistory chat: chats) {
 			User fromUser = chat.getFromUser();
 			User toUser = chat.getToUser();
 			if (fromUser.equals(user)) {
 				if (!contacts.contains(toUser)) {
 					contacts.add(toUser);
+					String lastUpdated = DateFormat.format(chat.getLastUpdated());
+					ContactChatDTO ccd = new ContactChatDTO(toUser.convertToDTO(), lastUpdated);
+					contactChats.add(ccd);
 				}
 			} else {
 				if (!contacts.contains(fromUser)) {
 					contacts.add(fromUser);
+					String lastUpdated = DateFormat.format(chat.getLastUpdated());
+					ContactChatDTO ccd = new ContactChatDTO(fromUser.convertToDTO(), lastUpdated);
+					contactChats.add(ccd);
 				}
 			}
 		}
 
 		List<UserDTO> result = User.convertToDTOs(contacts);
-		return result;
+//		return result;
+		return contactChats;
 	}
 
 	@PostMapping("/api/chat/addChat")
