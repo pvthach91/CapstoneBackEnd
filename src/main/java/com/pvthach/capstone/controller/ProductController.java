@@ -165,6 +165,8 @@ public class ProductController {
 		if (dto.getId() != null) {
 			product = productRepository.findById(dto.getId()).orElseThrow(
 					() -> new UsernameNotFoundException("Product is invalid"));
+			product.setTotalOrder(0);
+			product.setStatus(ProductStatus.PENDING.name());
 		}
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = userRepository.findByUsername(username).orElseThrow(
@@ -175,7 +177,7 @@ public class ProductController {
 		product.setPrice(dto.getPrice());
 		if (dto.getPromotionActive()) {
 			if (dto.getPromotionPrice() >= dto.getPrice()) {
-				return Response.failedResult("Promotion proce must be less than normal price");
+				return Response.failedResult("Promotion price must be less than normal price");
 			}
 			product.setPromotionPrice(dto.getPromotionPrice());
 		} else {
@@ -191,8 +193,8 @@ public class ProductController {
 		product.setQuantity(dto.getQuantity());
 		product.setStoreLocation(dto.getStoreLocation());
 		product.setLocationRef(dto.getLocationRef());
-		product.setStatus(ProductStatus.PENDING.name());
-		product.setTotalOrder(0);
+//		product.setStatus(ProductStatus.PENDING.name());
+//		product.setTotalOrder(0);
 		Product savedProduct = productRepository.save(product);
 
 		return Response.successResult(savedProduct.convertToDTO());

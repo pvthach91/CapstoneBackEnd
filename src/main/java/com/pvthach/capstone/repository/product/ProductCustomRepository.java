@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface ProductCustomRepository {
 
-    Page<List<ProductDTO>> searchProducts(Integer currentPage, Integer pageSize);
+//    Page<List<ProductDTO>> searchProducts(Integer currentPage, Integer pageSize);
 
     List<Product> searchProducts(ProductSearchCriteria criteria);
 }
