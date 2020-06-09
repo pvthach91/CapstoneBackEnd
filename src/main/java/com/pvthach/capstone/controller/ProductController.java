@@ -117,8 +117,39 @@ public class ProductController {
 		return Product.convertToDTOs(products);
 	}
 
-	@GetMapping("/api/guest/product/{id}")
+	@GetMapping("/api/product/{id}")
+	@PreAuthorize("hasRole('FARMER') or hasRole('PM') or hasRole('BUYER')")
 	public ApiResponse<ProductDetailDTO> getProduct(@PathVariable Long id) {
+		Optional<Product> productDetail = productRepository.findById(id);
+		if (!productDetail.isPresent()) {
+			return Response.failedResult("Failed to get product");
+		}
+		Product product = productDetail.get();
+//		List<Vehicle> vehicles = vehicleRepository.findAllByUser(product.getUser());
+
+		List<Comment> commments = commentRepository.findAllByProductOrderByDateCreatedDesc(product);
+
+		List<Rate> rates = rateRepository.findAllByProductOrderByDateCreatedDesc(product);
+
+		ProductDetailDTO detail = new ProductDetailDTO();
+		detail.setDto(product.convertToDTO());
+//		List<VehicleDTO> vehicleDTOS = Vehicle.convertToDTOs(vehicles);
+//		Collections.sort(vehicleDTOS, new Comparator<VehicleDTO>() {
+//			@Override
+//			public int compare(VehicleDTO o1, VehicleDTO o2) {
+//				return o1.getWeightCarry().compareTo(o2.getWeightCarry());
+//			}
+//		});
+//		detail.getDto().getUser().setVehicles(vehicleDTOS);
+		detail.setRecommendations(new ArrayList<ProductDTO>());
+		detail.setComments(Comment.convertToDTOs(commments));
+		detail.setRates(Rate.convertToDTOs(rates));
+
+		return Response.successResult(detail);
+	}
+
+	@GetMapping("/api/guest/product/{id}")
+	public ApiResponse<ProductDetailDTO> getProductForGuest(@PathVariable Long id) {
 		Optional<Product> productDetail = productRepository.findById(id);
 		if (!productDetail.isPresent()) {
 			return Response.failedResult("Failed to get product");
@@ -127,7 +158,7 @@ public class ProductController {
 		List<Vehicle> vehicles = vehicleRepository.findAllByUser(product.getUser());
 
 		// Recommendation will be applied here
-		List<Product> recommendations = productRepository.findTop4By();
+		List<Product> recommendations = productRepository.findTop8By();
 
 		List<Comment> commments = commentRepository.findAllByProductOrderByDateCreatedDesc(product);
 

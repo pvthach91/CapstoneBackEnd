@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, ProductCustomRepository {
 
-    List<Product> findTop4By();
+    List<Product> findTop8By();
 
     List<Product> findAllByUser(User user);
 
